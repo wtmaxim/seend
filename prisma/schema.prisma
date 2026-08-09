@@ -1,0 +1,291 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String       @id
+  name          String
+  email         String
+  emailVerified Boolean      @default(false)
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  members       Member[]
+  invitations   Invitation[]
+  uploadedDocuments Document[] @relation("DocumentUploader")
+  createdDatarooms  Dataroom[] @relation("DataroomCreator")
+  createdShareLinks ShareLink[] @relation("ShareLinkCreator")
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id                   String   @id
+  expiresAt            DateTime
+  token                String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Organization {
+  id               String        @id
+  name             String
+  slug             String
+  logo             String?
+  createdAt        DateTime
+  metadata         String?
+  stripeCustomerId String?       @unique
+  members          Member[]
+  invitations      Invitation[]
+  documents        Document[]
+  datarooms        Dataroom[]
+  shareLinks       ShareLink[]
+  subscription     Subscription?
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+// One row per organization once it has ever started a paid subscription.
+// Absence of a row (or a non-active/trialing status) means the org is on
+// the free plan — see lib/plan-limits.ts.
+model Subscription {
+  id                   String    @id @default(cuid())
+  organizationId       String    @unique
+  organization         Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  stripeSubscriptionId String    @unique
+  plan                 String
+  status               String
+  interval             String
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@map("subscription")
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String       @default("member")
+  createdAt      DateTime
+
+  @@index([organizationId])
+  @@index([userId])
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String       @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
+}
+
+model Document {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  uploadedById   String?
+  uploadedBy     User?        @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  originalName   String
+  pathname       String       @unique
+  contentType    String       @default("application/pdf")
+  size           Int
+  etag           String?
+  // Filled in the first time the document is rendered; images are always 1.
+  pageCount      Int?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  dataroomLinks  DataroomDocument[]
+  shareLinks     ShareLink[]
+
+  @@index([organizationId, createdAt])
+  @@index([uploadedById])
+  @@map("document")
+}
+
+// Points at exactly one of documentId or dataroomId, enforced in app code
+// (not a DB constraint). A document link grants access to that one file; a
+// dataroom link grants access to every document in the dataroom under a
+// single visit — the visitor picks which one to open.
+model ShareLink {
+  id             String           @id @default(cuid())
+  token          String           @unique
+  documentId     String?
+  document       Document?        @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  dataroomId     String?
+  dataroom       Dataroom?        @relation(fields: [dataroomId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String?
+  createdBy      User?            @relation("ShareLinkCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  label          String?
+  expiresAt      DateTime?
+  revoked        Boolean          @default(false)
+  // What the visitor is asked for before the document is shown. When both
+  // are false the gate is skipped entirely and the visit is anonymous.
+  requireName    Boolean          @default(true)
+  requireEmail   Boolean          @default(true)
+  // Lowercased, exact-match allowlist. Empty means "any email accepted" —
+  // only meaningful when requireEmail is true, since there's nothing to
+  // check against otherwise.
+  allowedEmails  String[]         @default([])
+  // Overlays the viewer's identity across the document to discourage
+  // redistribution of screenshots.
+  watermark      Boolean          @default(false)
+  visits         ShareLinkVisit[]
+  createdAt      DateTime         @default(now())
+
+  @@index([documentId])
+  @@index([dataroomId])
+  @@index([organizationId])
+  @@map("share_link")
+}
+
+model ShareLinkVisit {
+  id           String          @id @default(cuid())
+  shareLinkId  String
+  shareLink    ShareLink       @relation(fields: [shareLinkId], references: [id], onDelete: Cascade)
+  // Both null when the link asks for neither: the visit is anonymous and
+  // only identified by its timestamps and user agent.
+  visitorEmail String?
+  visitorName  String?
+  ipAddress    String?
+  userAgent    String?
+  startedAt    DateTime        @default(now())
+  pings        ShareLinkPing[]
+
+  @@index([shareLinkId])
+  @@map("share_link_visit")
+}
+
+// One immutable row per heartbeat, never updated. Total viewing time is
+// SUM(seconds) and "last seen" is MAX(createdAt), both computed at read
+// time — so concurrent pings can't race each other the way an incrementing
+// counter column could, and a failed write loses one interval instead of
+// silently corrupting a running total.
+model ShareLinkPing {
+  id        String         @id @default(cuid())
+  visitId   String
+  visit     ShareLinkVisit @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  seconds   Int
+  // Which document + page were on screen for this ping. Both null when the
+  // visitor isn't looking at a specific document yet (browsing a dataroom's
+  // document list). A dataroom visit can touch multiple documents, so page
+  // number alone can't tell "page 3 of doc A" from "page 3 of doc B" —
+  // deliberately not a relation, so deleting a document never has to
+  // cascade into this historical record.
+  documentId String?
+  pageNumber Int?
+  createdAt DateTime       @default(now())
+
+  @@index([visitId, createdAt])
+  @@index([documentId, pageNumber])
+  @@map("share_link_ping")
+}
+
+model Dataroom {
+  id             String             @id @default(cuid())
+  organizationId String
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  createdById    String?
+  createdBy      User?              @relation("DataroomCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  documents      DataroomDocument[]
+  shareLinks     ShareLink[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([organizationId, createdAt])
+  @@index([createdById])
+  @@map("dataroom")
+}
+
+model DataroomDocument {
+  id         String   @id @default(cuid())
+  dataroomId String
+  dataroom   Dataroom @relation(fields: [dataroomId], references: [id], onDelete: Cascade)
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  addedAt    DateTime @default(now())
+
+  @@unique([dataroomId, documentId])
+  @@index([documentId])
+  @@map("dataroom_document")
+}
+
+// Fixed-window counter backing lib/rate-limit.ts. Rows are short-lived
+// (windows are minutes wide) and self-heal on the next hit past resetAt, so
+// there's no separate cleanup job — a stray row just goes cold.
+model RateLimitBucket {
+  key     String   @id
+  count   Int      @default(1)
+  resetAt DateTime
+
+  @@map("rate_limit_bucket")
+}
