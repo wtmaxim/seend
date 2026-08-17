@@ -17,7 +17,6 @@ area, public viewer, and REST API.
 - optional collection of visitors' names and email addresses;
 - custom watermarks on rendered pages;
 - visit analytics and time spent per page;
-- Stripe subscriptions and billing portal;
 - API keys and REST API access for the Business plan;
 - responsive light and dark themes.
 
@@ -29,16 +28,14 @@ area, public viewer, and REST API.
 - Better Auth for authentication and organizations;
 - Vercel Blob for private file storage and the rendering cache;
 - MuPDF for PDF rasterization;
-- Resend for transactional emails;
-- Stripe for subscriptions.
+- Resend for transactional emails.
 
 ## Prerequisites
 
 - [Bun](https://bun.sh/);
 - an accessible PostgreSQL database;
 - a private Vercel Blob store;
-- a Resend account for invitations and password resets;
-- a Stripe account if billing needs to be tested.
+- a Resend account for invitations and password resets.
 
 ## Local Setup
 
@@ -77,28 +74,10 @@ When the first user signs up, Seend creates both the user and their organization
 | `BLOB_STORE_ID` | Vercel Blob store ID |
 | `RESEND_API_KEY` | Resend API key |
 | `EMAIL_FROM` | Sender address for transactional emails |
-| `STRIPE_SECRET_KEY` | Stripe secret key |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
-| `STRIPE_PRICE_PRO_MONTHLY` | Price ID for the monthly Pro plan |
-| `STRIPE_PRICE_PRO_YEARLY` | Price ID for the yearly Pro plan |
-| `STRIPE_PRICE_BUSINESS_MONTHLY` | Price ID for the monthly Business plan |
-| `STRIPE_PRICE_BUSINESS_YEARLY` | Price ID for the yearly Business plan |
 
 Never commit `.env.local`. In production, `BETTER_AUTH_URL` must be the actual
 HTTPS URL used by visitors, particularly because it is used to generate links
 in emails and sharing links returned by the API.
-
-### Stripe Webhook
-
-The Stripe webhook must target:
-
-```text
-POST /api/webhooks/stripe
-```
-
-Its signing secret must be stored in `STRIPE_WEBHOOK_SECRET`. The four Price IDs
-must match the prices configured in the same Stripe environment (test or
-production).
 
 ## Useful Commands
 
@@ -183,8 +162,8 @@ bun run build
 ```
 
 The build requires the environment variables used by server-side integrations.
-Also test the sign-up, invitation, upload, sharing, and payment flows against
-the external services in the target environment.
+Also test the sign-up, invitation, upload, and sharing flows against the external
+services in the target environment.
 
 ## Deployment
 
@@ -194,8 +173,7 @@ The application is designed to be deployed on Vercel:
 2. Create a private Vercel Blob store.
 3. Configure all environment variables.
 4. Set the domain in `BETTER_AUTH_URL`.
-5. Configure the Stripe webhook to target `/api/webhooks/stripe`.
-6. Deploy, then test emails and a shared document.
+5. Deploy, then test emails and a shared document.
 
 MuPDF is intentionally listed in `serverExternalPackages` in `next.config.ts`.
 This configuration is required to load its WASM module in production.
