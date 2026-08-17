@@ -4,10 +4,15 @@ export type PlanId = "free" | "pro" | "business"
 
 const INFINITE = Number.POSITIVE_INFINITY
 
-export const PLAN_LIMITS: Record<PlanId, { members: number; documents: number; datarooms: number }> = {
-  free: { members: 1, documents: 50, datarooms: 0 },
-  pro: { members: 5, documents: INFINITE, datarooms: INFINITE },
-  business: { members: INFINITE, documents: INFINITE, datarooms: INFINITE },
+// `api` gates programmatic access (API keys + /api/v1). Move it to pro here if
+// you want the API available one tier lower — nothing else needs changing.
+export const PLAN_LIMITS: Record<
+  PlanId,
+  { members: number; documents: number; datarooms: number; api: boolean }
+> = {
+  free: { members: 1, documents: 50, datarooms: 0, api: false },
+  pro: { members: 5, documents: INFINITE, datarooms: INFINITE, api: false },
+  business: { members: INFINITE, documents: INFINITE, datarooms: INFINITE, api: true },
 }
 
 export const PLAN_LABELS: Record<PlanId, string> = {

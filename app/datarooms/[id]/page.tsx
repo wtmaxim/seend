@@ -3,12 +3,14 @@ import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 
 import { DataroomDetailClient } from "@/components/datarooms/dataroom-detail-client"
+import { DataroomsLockedPage } from "@/components/datarooms/datarooms-locked-page"
 import { Sidebar } from "@/components/layout/sidebar"
 import { TopBar } from "@/components/layout/topbar"
 import { ShareLinksClient } from "@/components/share-links/share-links-client"
 import { VisitsChart } from "@/components/share-links/visits-chart"
 import { VisitsTable } from "@/components/share-links/visits-table"
 import { getDocumentAccess } from "@/lib/document-access"
+import { getOrganizationLimits } from "@/lib/plan-limits"
 import { prisma } from "@/lib/prisma"
 import { getVisitStats } from "@/lib/share-link-analytics"
 
@@ -19,6 +21,21 @@ export default async function DataroomDetailPage({ params }: { params: Promise<{
   if (!access?.session?.user) redirect("/login")
   if (!access.membership) redirect("/register")
   const { id } = await params
+
+  // A downgraded org can still hold datarooms created while on a paid plan;
+  // they stay in the database but must not be reachable.
+  const limits = await getOrganizationLimits(access.membership.organizationId)
+  if (limits.datarooms <= 0) {
+    return (
+      <DataroomsLockedPage
+        userName={access.session.user.name || access.session.user.email}
+        organizationName={access.organization?.name}
+        organizations={access.organizations}
+        activeOrganizationId={access.membership.organizationId}
+        isOwner={access.membership.role === "owner"}
+      />
+    )
+  }
 
   const dataroom = await prisma.dataroom.findFirst({
     where: { id, organizationId: access.membership.organizationId },

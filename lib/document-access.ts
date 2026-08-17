@@ -1,4 +1,5 @@
 import { headers } from "next/headers"
+import { cache } from "react"
 
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
@@ -6,7 +7,9 @@ import { DOCUMENT_CONTENT_TYPES, DOCUMENT_EXTENSIONS, MAX_DOCUMENT_SIZE, MAX_DOC
 
 export { DOCUMENT_CONTENT_TYPES, DOCUMENT_EXTENSIONS, MAX_DOCUMENT_SIZE, MAX_DOCUMENTS_PER_BATCH }
 
-export async function getDocumentAccess() {
+// Cached per request so the settings layout and its active tab page (both
+// Server Components) don't each re-run the session + membership lookup.
+export const getDocumentAccess = cache(async function getDocumentAccess() {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session?.user) return null
 
@@ -30,7 +33,7 @@ export async function getDocumentAccess() {
     canManage: membership.role === "owner" || membership.role === "admin",
     organizations,
   }
-}
+})
 
 export function serializeDocument(document: {
   id: string

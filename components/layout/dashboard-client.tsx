@@ -82,7 +82,7 @@ function AssistantBox() {
 const quickActions = [
   { icon: UploadCloud, label: "Ajouter des documents", href: "/documents" },
   { icon: FolderOpen, label: "Nouvelle dataroom", href: "/datarooms" },
-  { icon: UserPlus, label: "Inviter un membre", href: "/team" },
+  { icon: UserPlus, label: "Inviter un membre", href: "/settings/team" },
   { icon: Settings, label: "Paramètres", href: "/settings" },
 ]
 
@@ -264,7 +264,7 @@ export function DashboardClient({
                 }
                 label="Organisation"
                 footerLeft={
-                  <Link href="/team" className="hover:text-foreground">
+                  <Link href="/settings/team" className="hover:text-foreground">
                     Voir l&apos;équipe
                   </Link>
                 }

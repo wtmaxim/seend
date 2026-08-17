@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, FileText, FolderOpen, LayoutGrid, Loader2, Plus, Settings, Sparkle, Users } from "lucide-react"
+import { Check, FileText, FolderOpen, LayoutGrid, Loader2, Plus, Settings, Sparkle } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
@@ -31,7 +31,6 @@ const navItems = [
   { icon: LayoutGrid, label: "Accueil", href: "/" },
   { icon: FileText, label: "Documents", href: "/documents" },
   { icon: FolderOpen, label: "Datarooms", href: "/datarooms" },
-  { icon: Users, label: "Équipe", href: "/team" },
 ]
 
 type OrganizationItem = { id: string; name: string }

@@ -45,8 +45,8 @@ export async function POST(request: Request) {
       trial_period_days: hadSubscriptionBefore ? undefined : 14,
     },
     metadata: { organizationId: access.organization.id },
-    success_url: `${baseUrl}/settings?checkout=success`,
-    cancel_url: `${baseUrl}/settings?checkout=canceled`,
+    success_url: `${baseUrl}/settings/billing?checkout=success`,
+    cancel_url: `${baseUrl}/settings/billing?checkout=canceled`,
   })
 
   return NextResponse.json({ url: session.url })

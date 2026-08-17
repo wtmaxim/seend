@@ -28,7 +28,10 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
       body: JSON.stringify({ name, description }),
     })
     setSubmitting(false)
-    if (!response.ok) return setError("La création a échoué.")
+    if (!response.ok) {
+      const data = await response.json().catch(() => null)
+      return setError((data as { error?: string } | null)?.error || "La création a échoué.")
+    }
     const { id } = (await response.json()) as { id: string }
     router.push(`/datarooms/${id}`)
   }

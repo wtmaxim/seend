@@ -16,7 +16,7 @@ export async function POST() {
   const baseUrl = process.env.BETTER_AUTH_URL || "http://localhost:3000"
   const session = await stripe.billingPortal.sessions.create({
     customer: access.organization.stripeCustomerId,
-    return_url: `${baseUrl}/settings`,
+    return_url: `${baseUrl}/settings/billing`,
   })
 
   return NextResponse.json({ url: session.url })

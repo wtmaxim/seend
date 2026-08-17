@@ -2,9 +2,11 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { DataroomsClient } from "@/components/datarooms/datarooms-client"
+import { DataroomsLockedPage } from "@/components/datarooms/datarooms-locked-page"
 import { Sidebar } from "@/components/layout/sidebar"
 import { TopBar } from "@/components/layout/topbar"
 import { getDocumentAccess } from "@/lib/document-access"
+import { getOrganizationLimits } from "@/lib/plan-limits"
 import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = { title: "Datarooms · Seend", description: "Vos collections de documents." }
@@ -13,6 +15,19 @@ export default async function DataroomsPage() {
   const access = await getDocumentAccess()
   if (!access?.session?.user) redirect("/login")
   if (!access.membership) redirect("/register")
+
+  const limits = await getOrganizationLimits(access.membership.organizationId)
+  if (limits.datarooms <= 0) {
+    return (
+      <DataroomsLockedPage
+        userName={access.session.user.name || access.session.user.email}
+        organizationName={access.organization?.name}
+        organizations={access.organizations}
+        activeOrganizationId={access.membership.organizationId}
+        isOwner={access.membership.role === "owner"}
+      />
+    )
+  }
 
   const datarooms = await prisma.dataroom.findMany({
     where: { organizationId: access.membership.organizationId },
