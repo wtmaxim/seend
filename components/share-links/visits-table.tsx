@@ -49,7 +49,7 @@ export function VisitsTable({ visits }: { visits: VisitItem[] }) {
               <div className="flex shrink-0 items-center gap-2 text-xs">
                 {isOnline(visit.lastSeenAt) && (
                   <span className="flex items-center gap-1 text-emerald-500">
-                    <span className="size-1.5 rounded-full bg-emerald-500" />
+                    <span className="size-1.5 rounded-none bg-emerald-500" />
                     En ligne
                   </span>
                 )}

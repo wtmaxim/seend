@@ -5,7 +5,7 @@ export function MiniBars({ values }: { values: number[] }) {
       {values.map((value, index) => (
         <div
           key={index}
-          className="w-2.5 rounded-full bg-foreground/60"
+          className="w-2.5 rounded-none bg-foreground/60"
           style={{ height: `${Math.max(10, (value / max) * 100)}%` }}
         />
       ))}

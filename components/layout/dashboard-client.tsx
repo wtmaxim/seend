@@ -258,7 +258,7 @@ export function DashboardClient({
 
               <DashboardCard
                 icon={
-                  <span className="flex size-5 items-center justify-center rounded-full bg-white/10 text-[10px] font-medium text-foreground">
+                  <span className="flex size-5 items-center justify-center rounded-none bg-white/10 text-[10px] font-medium text-foreground">
                     {organizationName.slice(0, 1).toUpperCase()}
                   </span>
                 }

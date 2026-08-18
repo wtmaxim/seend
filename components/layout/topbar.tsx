@@ -31,7 +31,7 @@ export function TopBar({ userName }: { userName?: string }) {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="flex size-9 items-center justify-center rounded-full bg-white/10 text-xs font-medium text-foreground outline-none transition-colors hover:bg-white/15"
+          className="flex size-9 items-center justify-center rounded-none bg-white/10 text-xs font-medium text-foreground outline-none transition-colors hover:bg-white/15"
           aria-label={userName ? `Menu de ${userName}` : "Menu du compte"}
         >
           {initial}

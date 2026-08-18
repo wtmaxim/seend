@@ -125,7 +125,7 @@ export function TeamClient({
             className="flex items-center justify-between gap-4 border-b border-border px-5 py-4 last:border-b-0"
           >
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs font-medium text-foreground">
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-none bg-white/10 text-xs font-medium text-foreground">
                 {(member.name || member.email).slice(0, 1).toUpperCase()}
               </div>
               <div className="min-w-0">
