@@ -1,8 +1,7 @@
 "use client"
 
 import { Check, FileText, FolderOpen, LayoutGrid, Loader2, Plus, Settings, Sparkle } from "lucide-react"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import {
@@ -23,15 +22,16 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import { Link, usePathname, useRouter } from "@/i18n/navigation"
 import { authClient } from "@/lib/auth-client"
 import { isValidOrganizationSlug, toOrganizationSlug } from "@/lib/organization-slug"
 import { cn } from "@/lib/utils"
 
 const navItems = [
-  { icon: LayoutGrid, label: "Accueil", href: "/" },
-  { icon: FileText, label: "Documents", href: "/documents" },
-  { icon: FolderOpen, label: "Datarooms", href: "/datarooms" },
-]
+  { icon: LayoutGrid, key: "home", href: "/" },
+  { icon: FileText, key: "documents", href: "/documents" },
+  { icon: FolderOpen, key: "datarooms", href: "/datarooms" },
+] as const
 
 type OrganizationItem = { id: string; name: string }
 
@@ -44,6 +44,10 @@ export function Sidebar({
   organizations?: OrganizationItem[]
   activeOrganizationId?: string
 }) {
+  const t = useTranslations("nav")
+  const tOrganization = useTranslations("organization")
+  // Locale-aware: the prefix is stripped, so these comparisons stay the same
+  // in every language.
   const pathname = usePathname()
   const router = useRouter()
   const [switching, setSwitching] = useState<string | null>(null)
@@ -67,7 +71,7 @@ export function Sidebar({
       <DropdownMenu>
         <DropdownMenuTrigger
           className="flex size-8 items-center justify-center rounded-lg bg-white/10 text-[11px] font-medium text-foreground outline-none transition-colors hover:bg-white/15"
-          aria-label="Changer d'organisation"
+          aria-label={t("switchOrganization")}
           title={organizationName}
         >
           {organizationName?.slice(0, 1).toUpperCase() || "?"}
@@ -86,7 +90,7 @@ export function Sidebar({
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setCreating(true)}>
             <Plus />
-            Créer une organisation
+            {tOrganization("createAction")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -98,7 +102,7 @@ export function Sidebar({
             <Link
               key={item.href}
               href={item.href}
-              title={item.label}
+              title={t(item.key)}
               className={cn(
                 "rounded-xl p-2.5 transition-colors",
                 active
@@ -114,7 +118,7 @@ export function Sidebar({
 
       <Link
         href="/settings"
-        title="Paramètres"
+        title={t("settings")}
         className={cn(
           "rounded-xl p-2.5 transition-colors",
           pathname?.startsWith("/settings")
@@ -137,6 +141,7 @@ function CreateOrganizationSheet({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
+  const t = useTranslations("organization")
   const router = useRouter()
   const [name, setName] = useState("")
   const [slug, setSlug] = useState("")
@@ -154,16 +159,16 @@ function CreateOrganizationSheet({
     const trimmedName = name.trim()
     const trimmedSlug = slug.trim()
 
-    if (!trimmedName) return setError("Le nom est requis.")
+    if (!trimmedName) return setError(t("nameRequired"))
     if (!isValidOrganizationSlug(trimmedSlug)) {
-      return setError("L'identifiant doit contenir des lettres minuscules, chiffres et tirets simples.")
+      return setError(t("invalidSlug"))
     }
 
     setSubmitting(true)
     const result = await authClient.organization.create({ name: trimmedName, slug: trimmedSlug })
     setSubmitting(false)
 
-    if (result.error) return setError(result.error.message || "La création a échoué.")
+    if (result.error) return setError(result.error.message || t("createFailed"))
 
     setName("")
     setSlug("")
@@ -177,15 +182,15 @@ function CreateOrganizationSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Créer une organisation</SheetTitle>
-          <SheetDescription>Tu deviendras propriétaire de cette nouvelle organisation.</SheetDescription>
+          <SheetTitle>{t("createTitle")}</SheetTitle>
+          <SheetDescription>{t("createDescription")}</SheetDescription>
         </SheetHeader>
 
         {error && <p className="text-xs text-destructive">{error}</p>}
 
         <div className="space-y-3">
           <div className="space-y-1.5">
-            <Label htmlFor="new-org-name">Nom de l&apos;organisation</Label>
+            <Label htmlFor="new-org-name">{t("nameLabel")}</Label>
             <Input
               id="new-org-name"
               placeholder="Acme Inc."
@@ -196,7 +201,7 @@ function CreateOrganizationSheet({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="new-org-slug">Identifiant</Label>
+            <Label htmlFor="new-org-slug">{t("slugLabel")}</Label>
             <Input
               id="new-org-slug"
               placeholder="acme-inc"
@@ -213,7 +218,7 @@ function CreateOrganizationSheet({
         <SheetFooter>
           <Button onClick={() => void createOrganization()} disabled={submitting}>
             {submitting ? <Loader2 className="animate-spin" /> : null}
-            Créer
+            {t("create")}
           </Button>
         </SheetFooter>
       </SheetContent>

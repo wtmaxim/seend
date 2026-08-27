@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { AlertCircle, ArrowRight, LoaderCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
+
+import { Link, useRouter } from "@/i18n/navigation"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import { PasswordInput } from "@/components/auth/password-input"
 import { signIn } from "@/lib/auth-client"
 
 export function LoginForm() {
+  const t = useTranslations("auth")
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
@@ -34,14 +36,14 @@ export function LoginForm() {
       })
 
       if (result.error) {
-        setError(result.error.message || "Unable to sign in.")
+        setError(result.error.message || t("login.failed"))
         return
       }
 
       router.replace("/")
       router.refresh()
     } catch {
-      setError("Unable to reach the authentication service. Try again.")
+      setError(t("serviceUnreachable"))
     } finally {
       setIsSubmitting(false)
     }
@@ -57,12 +59,12 @@ export function LoginForm() {
       ) : null}
 
       <div className="space-y-1.5">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t("email")}</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="you@company.com"
+          placeholder={t("emailPlaceholder")}
           autoComplete="email"
           autoFocus
           required
@@ -72,18 +74,18 @@ export function LoginForm() {
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{t("password")}</Label>
           <Link
             href="/forgot-password"
             className="text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
-            Forgot password?
+            {t("login.forgotPassword")}
           </Link>
         </div>
         <PasswordInput
           id="password"
           name="password"
-          placeholder="Enter your password"
+          placeholder={t("passwordPlaceholder")}
           autoComplete="current-password"
           minLength={8}
           maxLength={128}
@@ -96,11 +98,11 @@ export function LoginForm() {
         {isSubmitting ? (
           <>
             <LoaderCircle className="animate-spin" />
-            Signing in
+            {t("login.submitting")}
           </>
         ) : (
           <>
-            Sign in
+            {t("login.submit")}
             <ArrowRight data-icon="inline-end" />
           </>
         )}

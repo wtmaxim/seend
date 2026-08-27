@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 
 import { Heartbeat } from "@/components/view/heartbeat"
@@ -15,6 +16,7 @@ export function DocumentViewer({
   pageCount: number
   documentName: string
 }) {
+  const t = useTranslations("view")
   const [failed, setFailed] = useState<Record<number, boolean>>({})
   const [currentPage, setCurrentPage] = useState(1)
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1)
@@ -68,13 +70,13 @@ export function DocumentViewer({
         >
           {failed[pageNumber] ? (
             <p className="p-10 text-center text-xs text-muted-foreground">
-              Cette page n&apos;a pas pu être affichée.
+              {t("pageFailed")}
             </p>
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={`/api/view/${token}/documents/${documentId}/page/${pageNumber}`}
-              alt={`${documentName} — page ${pageNumber} sur ${pageCount}`}
+              alt={t("pageAlt", { name: documentName, page: pageNumber, total: pageCount })}
               // The first page is the one the visitor is waiting on; the
               // rest load as they scroll toward them, so a long document
               // doesn't trigger dozens of renders at once.

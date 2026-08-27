@@ -1,11 +1,12 @@
 "use client"
 
 import { Download, FileText, FolderOpen, ImageIcon, Loader2, Trash2 } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useFormatter, useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { Link, useRouter } from "@/i18n/navigation"
+import { formatBytes } from "@/lib/format-bytes"
 
 type DocumentDetail = {
   id: string
@@ -14,11 +15,6 @@ type DocumentDetail = {
   size: number
   createdAt: string
   uploadedBy: string
-}
-
-function formatSize(bytes: number) {
-  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 export function DocumentDetailClient({
@@ -30,17 +26,21 @@ export function DocumentDetailClient({
   canManage: boolean
   datarooms: { id: string; name: string }[]
 }) {
+  const t = useTranslations("documents")
+  const tDatarooms = useTranslations("datarooms")
+  const tCommon = useTranslations("common")
+  const format = useFormatter()
   const router = useRouter()
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const isImage = document.contentType.startsWith("image/")
 
   async function removeDocument() {
-    if (!window.confirm(`Supprimer « ${document.originalName} » définitivement ?`)) return
+    if (!window.confirm(t("deleteConfirm", { name: document.originalName }))) return
     setDeleting(true)
     const response = await fetch(`/api/documents/${document.id}`, { method: "DELETE" })
     if (!response.ok) {
-      setError("La suppression a échoué.")
+      setError(t("deleteFailed"))
       setDeleting(false)
       return
     }
@@ -61,17 +61,17 @@ export function DocumentDetailClient({
         ) : (
           <div className="flex flex-col items-center justify-center gap-3 bg-muted/30 py-16">
             <FileText className="size-10 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">Aperçu non disponible pour ce type de fichier.</p>
+            <p className="text-sm text-muted-foreground">{t("detail.noPreview")}</p>
           </div>
         )}
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border">
         {[
-          { label: "Type", value: isImage ? "Image" : "PDF" },
-          { label: "Taille", value: formatSize(document.size) },
-          { label: "Ajouté par", value: document.uploadedBy },
-          { label: "Ajouté le", value: new Date(document.createdAt).toLocaleDateString("fr-FR") },
+          { label: t("detail.type"), value: isImage ? "Image" : "PDF" },
+          { label: t("columns.size"), value: formatBytes(document.size, tCommon.raw("bytes") as string[]) },
+          { label: t("columns.uploadedBy"), value: document.uploadedBy },
+          { label: t("detail.addedOn"), value: format.dateTime(new Date(document.createdAt), { day: "2-digit", month: "2-digit", year: "numeric" }) },
         ].map((row) => (
           <div
             key={row.label}
@@ -89,19 +89,19 @@ export function DocumentDetailClient({
         <Button asChild>
           <a href={`/api/documents/${document.id}/file`} target="_blank" rel="noreferrer">
             {isImage ? <ImageIcon /> : <FileText />}
-            Ouvrir
+            {t("detail.open")}
           </a>
         </Button>
         <Button asChild variant="outline">
           <a href={`/api/documents/${document.id}/file?download=1`}>
             <Download />
-            Télécharger
+            {t("detail.download")}
           </a>
         </Button>
         {canManage && (
           <Button variant="destructive" disabled={deleting} onClick={() => void removeDocument()}>
             {deleting ? <Loader2 className="animate-spin" /> : <Trash2 />}
-            Supprimer
+            {t("detail.delete")}
           </Button>
         )}
       </div>
@@ -109,10 +109,10 @@ export function DocumentDetailClient({
       <div className="rounded-2xl border border-border p-5">
         <div className="mb-3 flex items-center gap-2 text-sm text-foreground/80">
           <FolderOpen className="size-4" />
-          <span>Datarooms</span>
+          <span>{tDatarooms("title")}</span>
         </div>
         {datarooms.length === 0 ? (
-          <p className="text-xs text-muted-foreground">Ce document n&apos;est dans aucune dataroom.</p>
+          <p className="text-xs text-muted-foreground">{t("detail.noDataroom")}</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {datarooms.map((dataroom) => (

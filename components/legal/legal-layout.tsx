@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 
 const LEGAL_LINKS = [
   { href: "/mentions-legales", label: "Mentions légales" },

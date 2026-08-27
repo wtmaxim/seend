@@ -1,15 +1,18 @@
 "use client"
 
 import { FolderOpen, Loader2, Plus, Trash2 } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useFormatter, useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { Link, useRouter } from "@/i18n/navigation"
 
 type DataroomItem = { id: string; name: string; description: string | null; documentCount: number; createdAt: string }
 
 export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomItem[]; canManage: boolean }) {
+  const t = useTranslations("datarooms")
+  const tCommon = useTranslations("common")
+  const format = useFormatter()
   const router = useRouter()
   const [creating, setCreating] = useState(false)
   const [name, setName] = useState("")
@@ -19,7 +22,7 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
   const [deleting, setDeleting] = useState<string | null>(null)
 
   async function createDataroom() {
-    if (!name.trim()) return setError("Le nom est requis.")
+    if (!name.trim()) return setError(tCommon("nameRequired"))
     setSubmitting(true)
     setError(null)
     const response = await fetch("/api/datarooms", {
@@ -30,17 +33,17 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
     setSubmitting(false)
     if (!response.ok) {
       const data = await response.json().catch(() => null)
-      return setError((data as { error?: string } | null)?.error || "La création a échoué.")
+      return setError((data as { error?: string } | null)?.error || tCommon("createFailed"))
     }
     const { id } = (await response.json()) as { id: string }
     router.push(`/datarooms/${id}`)
   }
 
   async function removeDataroom(dataroom: DataroomItem) {
-    if (!window.confirm(`Supprimer la dataroom « ${dataroom.name} » ?`)) return
+    if (!window.confirm(t("deleteConfirm", { name: dataroom.name }))) return
     setDeleting(dataroom.id)
     const response = await fetch(`/api/datarooms/${dataroom.id}`, { method: "DELETE" })
-    if (!response.ok) setError("La suppression a échoué.")
+    if (!response.ok) setError(t("deleteFailed"))
     setDeleting(null)
     router.refresh()
   }
@@ -55,13 +58,13 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
                 autoFocus
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="Nom de la dataroom"
+                placeholder={t("namePlaceholder")}
                 className="w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-foreground/40"
               />
               <textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                placeholder="Description (optionnel)"
+                placeholder={t("descriptionPlaceholder")}
                 rows={2}
                 className="w-full resize-none rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-foreground/40"
               />
@@ -69,10 +72,10 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
               <div className="flex items-center gap-2">
                 <Button onClick={() => void createDataroom()} disabled={submitting}>
                   {submitting ? <Loader2 className="animate-spin" /> : null}
-                  Créer
+                  {t("create")}
                 </Button>
                 <Button variant="ghost" onClick={() => { setCreating(false); setError(null) }}>
-                  Annuler
+                  {tCommon("cancel")}
                 </Button>
               </div>
             </div>
@@ -83,7 +86,7 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
               className="flex w-full items-center justify-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <Plus className="size-4" />
-              Nouvelle dataroom
+              {t("newDataroom")}
             </button>
           )}
         </div>
@@ -94,8 +97,8 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
       {datarooms.length === 0 ? (
         <div className="rounded-2xl border border-border p-10 text-center">
           <FolderOpen className="mx-auto mb-3 size-7 text-muted-foreground" />
-          <p className="text-sm font-medium">Aucune dataroom pour le moment</p>
-          <p className="mt-1 text-xs text-muted-foreground">Regroupez vos documents pour préparer vos échanges.</p>
+          <p className="text-sm font-medium">{t("emptyTitle")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t("emptyDescription")}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -110,8 +113,8 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
                   <p className="line-clamp-2 text-xs text-muted-foreground">{dataroom.description}</p>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  {dataroom.documentCount} document{dataroom.documentCount !== 1 ? "s" : ""} ·{" "}
-                  {new Date(dataroom.createdAt).toLocaleDateString("fr-FR")}
+                  {t("documentCount", { count: dataroom.documentCount })} ·{" "}
+                  {format.dateTime(new Date(dataroom.createdAt), { day: "2-digit", month: "2-digit", year: "numeric" })}
                 </p>
               </Link>
               {canManage && (
@@ -120,7 +123,7 @@ export function DataroomsClient({ datarooms, canManage }: { datarooms: DataroomI
                   size="icon-xs"
                   disabled={deleting === dataroom.id}
                   onClick={() => void removeDataroom(dataroom)}
-                  aria-label={`Supprimer ${dataroom.name}`}
+                  aria-label={t("delete", { name: dataroom.name })}
                   className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100"
                 >
                   {deleting === dataroom.id ? <Loader2 className="animate-spin" /> : <Trash2 />}

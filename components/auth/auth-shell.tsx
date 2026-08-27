@@ -1,4 +1,6 @@
-import Link from "next/link"
+import { getTranslations } from "next-intl/server"
+
+import { Link } from "@/i18n/navigation"
 
 import {
   Card,
@@ -17,7 +19,7 @@ type AuthShellProps = {
   title: string
 }
 
-export function AuthShell({
+export async function AuthShell({
   children,
   description,
   footerHref,
@@ -25,6 +27,8 @@ export function AuthShell({
   footerText,
   title,
 }: AuthShellProps) {
+  const t = await getTranslations("auth")
+
   return (
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background px-4 py-10">
       <div
@@ -61,7 +65,7 @@ export function AuthShell({
         </Card>
 
         <p className="mt-4 text-center font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
-          Secure access · Press D to toggle theme
+          {t("shellFooter")}
         </p>
       </div>
     </main>

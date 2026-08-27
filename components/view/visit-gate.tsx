@@ -1,8 +1,10 @@
 "use client"
 
 import { Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useRef, useState } from "react"
+
+import { useRouter } from "@/i18n/navigation"
 
 export function VisitGate({
   token,
@@ -17,6 +19,7 @@ export function VisitGate({
   requireName: boolean
   requireEmail: boolean
 }) {
+  const t = useTranslations("view")
   const router = useRouter()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -35,13 +38,13 @@ export function VisitGate({
       })
       if (!response.ok) {
         const data = (await response.json().catch(() => null)) as { error?: string } | null
-        setError(data?.error || "Une erreur est survenue.")
+        setError(data?.error || t("genericError"))
         setSubmitting(false)
         return
       }
       router.refresh()
     },
-    [token, router]
+    [token, router, t]
   )
 
   // Nothing to ask for: open the visit straight away so the visitor never
@@ -67,10 +70,10 @@ export function VisitGate({
       <div className="w-full max-w-sm space-y-6">
         <div className="space-y-1 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            {kind === "dataroom" ? "Dataroom partagée" : "Document partagé"}
+            {kind === "dataroom" ? t("sharedDataroom") : t("sharedDocument")}
           </p>
           <h1 className="text-xl font-medium tracking-tight text-foreground">{title}</h1>
-          <p className="text-sm text-muted-foreground">Entrez vos informations pour continuer.</p>
+          <p className="text-sm text-muted-foreground">{t("gatePrompt")}</p>
         </div>
         <form
           onSubmit={(event) => {
@@ -85,7 +88,7 @@ export function VisitGate({
               autoFocus
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="Nom"
+              placeholder={t("namePlaceholder")}
               className="w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-foreground/40"
             />
           )}
@@ -96,7 +99,7 @@ export function VisitGate({
               autoFocus={!requireName}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="Email"
+              placeholder={t("emailPlaceholder")}
               className="w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-foreground/40"
             />
           )}
@@ -107,7 +110,7 @@ export function VisitGate({
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {submitting && <Loader2 className="size-4 animate-spin" />}
-            Continuer
+            {t("continue")}
           </button>
         </form>
       </div>

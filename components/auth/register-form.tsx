@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { AlertCircle, ArrowRight, Building2, LoaderCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
+
+import { Link, useRouter } from "@/i18n/navigation"
 
 import { PasswordInput } from "@/components/auth/password-input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -19,6 +21,7 @@ type RegisterFormProps = {
 }
 
 export function RegisterForm({ initialStage }: RegisterFormProps) {
+  const t = useTranslations("auth")
   const router = useRouter()
   const [stage, setStage] = React.useState<RegisterStage>(initialStage)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -39,13 +42,13 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
     const slug = organizationSlug.trim()
 
     if (!name) {
-      setError("Enter an organization name.")
+      setError(t("register.organizationNameRequired"))
       return false
     }
 
     if (!isValidOrganizationSlug(slug)) {
       setError(
-        "Use lowercase letters, numbers, and single hyphens for the slug."
+        t("register.invalidSlug")
       )
       return false
     }
@@ -56,7 +59,7 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
       if (result.error) {
         setError(
           result.error.message ||
-            "Your account is ready, but the organization could not be created."
+            t("register.organizationCreatedFailedShort")
         )
         setStage("organization")
         return false
@@ -65,7 +68,7 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
       return true
     } catch {
       setError(
-        "Your account is ready, but the organization could not be created. Try again."
+        t("register.organizationFailed")
       )
       setStage("organization")
       return false
@@ -85,17 +88,17 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
     )
 
     if (password !== passwordConfirmation) {
-      setError("Passwords do not match.")
+      setError(t("reset.mismatch"))
       return
     }
 
     if (password.length < 8 || password.length > 128) {
-      setError("Password must be between 8 and 128 characters.")
+      setError(t("reset.length"))
       return
     }
 
     if (!organizationName.trim() || !isValidOrganizationSlug(organizationSlug.trim())) {
-      setError("Enter a valid organization name and slug.")
+      setError(t("register.invalidOrganization"))
       return
     }
 
@@ -105,7 +108,7 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
       const result = await signUp.email({ name, email, password })
 
       if (result.error) {
-        setError(result.error.message || "Unable to create your account.")
+        setError(result.error.message || t("register.failed"))
         return
       }
 
@@ -117,7 +120,7 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
         router.refresh()
       }
     } catch {
-      setError("Unable to reach the authentication service. Try again.")
+      setError(t("serviceUnreachable"))
     } finally {
       setIsSubmitting(false)
     }
@@ -145,9 +148,9 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
       <form className="space-y-4" onSubmit={handleOrganizationSubmit}>
         <Alert>
           <Building2 />
-          <AlertTitle>Account created</AlertTitle>
+          <AlertTitle>{t("register.accountCreated")}</AlertTitle>
           <AlertDescription>
-            Finish setting up your organization to continue.
+            {t("register.finishOrganization")}
           </AlertDescription>
         </Alert>
 
@@ -173,11 +176,11 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
           {isSubmitting ? (
             <>
               <LoaderCircle className="animate-spin" />
-              Creating organization
+              {t("register.creatingOrganization")}
             </>
           ) : (
             <>
-              Create organization
+              {t("register.createOrganization")}
               <ArrowRight data-icon="inline-end" />
             </>
           )}
@@ -197,11 +200,11 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor="name">Full name</Label>
+          <Label htmlFor="name">{t("register.fullName")}</Label>
           <Input
             id="name"
             name="name"
-            placeholder="Jane Smith"
+            placeholder={t("register.namePlaceholder")}
             autoComplete="name"
             autoFocus
             required
@@ -210,12 +213,12 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
         </div>
 
         <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t("email")}</Label>
           <Input
             id="email"
             name="email"
             type="email"
-            placeholder="you@company.com"
+            placeholder={t("emailPlaceholder")}
             autoComplete="email"
             required
             disabled={isSubmitting}
@@ -223,11 +226,11 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{t("password")}</Label>
           <PasswordInput
             id="password"
             name="password"
-            placeholder="8–128 characters"
+            placeholder={t("register.passwordPlaceholder")}
             autoComplete="new-password"
             minLength={8}
             maxLength={128}
@@ -237,11 +240,11 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="passwordConfirmation">Confirm password</Label>
+          <Label htmlFor="passwordConfirmation">{t("register.confirmPassword")}</Label>
           <PasswordInput
             id="passwordConfirmation"
             name="passwordConfirmation"
-            placeholder="Repeat password"
+            placeholder={t("register.confirmPlaceholder")}
             autoComplete="new-password"
             minLength={8}
             maxLength={128}
@@ -253,7 +256,7 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
 
       <div className="border-t pt-4">
         <p className="mb-3 font-heading text-xs font-medium">
-          Your organization
+          {t("register.yourOrganization")}
         </p>
         <OrganizationFields
           disabled={isSubmitting}
@@ -271,25 +274,25 @@ export function RegisterForm({ initialStage }: RegisterFormProps) {
         {isSubmitting ? (
           <>
             <LoaderCircle className="animate-spin" />
-            Creating account
+            {t("register.submitting")}
           </>
         ) : (
           <>
-            Create account
+            {t("register.submit")}
             <ArrowRight data-icon="inline-end" />
           </>
         )}
       </Button>
 
       <p className="text-center text-[11px] text-muted-foreground">
-        By creating an account, you agree to our{" "}
-        <a href="/cgu" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">
-          CGU
-        </a>{" "}
-        and{" "}
-        <a href="/confidentialite" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">
-          privacy policy
-        </a>
+        {t("register.termsPrefix")}{" "}
+        <Link href="/cgu" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">
+          {t("register.terms")}
+        </Link>{" "}
+        {t("register.termsMiddle")}{" "}
+        <Link href="/confidentialite" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">
+          {t("register.privacy")}
+        </Link>
         .
       </p>
     </form>
@@ -311,14 +314,16 @@ function OrganizationFields({
   onSlugChange,
   slug,
 }: OrganizationFieldsProps) {
+  const t = useTranslations("auth")
+
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="space-y-1.5">
-        <Label htmlFor="organizationName">Organization name</Label>
+        <Label htmlFor="organizationName">{t("register.organizationName")}</Label>
         <Input
           id="organizationName"
           name="organizationName"
-          placeholder="Acme Inc."
+          placeholder={t("register.organizationPlaceholder")}
           autoComplete="organization"
           value={name}
           onChange={(event) => onNameChange(event.target.value)}
@@ -327,15 +332,15 @@ function OrganizationFields({
         />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="organizationSlug">Organization slug</Label>
+        <Label htmlFor="organizationSlug">{t("register.organizationSlug")}</Label>
         <Input
           id="organizationSlug"
           name="organizationSlug"
-          placeholder="acme-inc"
+          placeholder={t("register.slugPlaceholder")}
           value={slug}
           onChange={(event) => onSlugChange(event.target.value)}
           pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-          title="Use lowercase letters, numbers, and single hyphens."
+          title={t("register.slugHint")}
           required
           disabled={disabled}
         />

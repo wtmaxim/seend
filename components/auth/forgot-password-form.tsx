@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { AlertCircle, ArrowRight, LoaderCircle, MailCheck } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
 
 export function ForgotPasswordForm() {
+  const t = useTranslations("auth")
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [sent, setSent] = React.useState(false)
@@ -28,13 +30,13 @@ export function ForgotPasswordForm() {
       })
 
       if (result.error) {
-        setError(result.error.message || "Unable to send the reset email.")
+        setError(result.error.message || t("forgot.failed"))
         return
       }
 
       setSent(true)
     } catch {
-      setError("Unable to reach the authentication service. Try again.")
+      setError(t("serviceUnreachable"))
     } finally {
       setIsSubmitting(false)
     }
@@ -45,7 +47,7 @@ export function ForgotPasswordForm() {
       <Alert>
         <MailCheck />
         <AlertDescription>
-          If an account exists for that email, a reset link is on its way. Check your inbox.
+          {t("forgot.sent")}
         </AlertDescription>
       </Alert>
     )
@@ -61,12 +63,12 @@ export function ForgotPasswordForm() {
       ) : null}
 
       <div className="space-y-1.5">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t("email")}</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="you@company.com"
+          placeholder={t("emailPlaceholder")}
           autoComplete="email"
           autoFocus
           required
@@ -78,11 +80,11 @@ export function ForgotPasswordForm() {
         {isSubmitting ? (
           <>
             <LoaderCircle className="animate-spin" />
-            Sending link
+            {t("forgot.submitting")}
           </>
         ) : (
           <>
-            Send reset link
+            {t("forgot.submit")}
             <ArrowRight data-icon="inline-end" />
           </>
         )}

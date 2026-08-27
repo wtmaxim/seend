@@ -1,7 +1,7 @@
 "use client"
 
 import { Check, Copy, Droplets, Link2, Loader2, Mail, Plus, Trash2, User } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useFormatter, useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import { useRouter } from "@/i18n/navigation"
 
 type ShareLinkItem = {
   id: string
@@ -45,6 +46,7 @@ function parseEmailList(raw: string): string[] {
 // deterministic relative path, and only resolve the full URL inside an
 // event handler, which never runs during render.
 function CopyButton({ path }: { path: string }) {
+  const t = useTranslations("shareLinks")
   const [copied, setCopied] = useState(false)
   return (
     <Button
@@ -56,7 +58,7 @@ function CopyButton({ path }: { path: string }) {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
       }}
-      aria-label="Copier le lien"
+      aria-label={t("copyLink")}
     >
       {copied ? <Check /> : <Copy />}
     </Button>
@@ -101,6 +103,9 @@ function Toggle({
 }
 
 export function ShareLinksClient({ createUrl, links }: { createUrl: string; links: ShareLinkItem[] }) {
+  const t = useTranslations("shareLinks")
+  const tCommon = useTranslations("common")
+  const format = useFormatter()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [label, setLabel] = useState("")
@@ -130,7 +135,7 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
       }),
     })
     setSubmitting(false)
-    if (!response.ok) return setError("La création a échoué.")
+    if (!response.ok) return setError(t("createFailed"))
     setOpen(false)
     setLabel("")
     setExpiresInDays("")
@@ -142,11 +147,11 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
   }
 
   async function revokeLink(id: string) {
-    if (!window.confirm("Révoquer ce lien ? Il ne sera plus accessible.")) return
+    if (!window.confirm(t("revokeConfirm"))) return
     setRevoking(id)
     const response = await fetch(`/api/share-links/${id}`, { method: "DELETE" })
     setRevoking(null)
-    if (!response.ok) return setError("La révocation a échoué.")
+    if (!response.ok) return setError(t("revokeFailed"))
     router.refresh()
   }
 
@@ -155,71 +160,64 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
       <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-sm text-foreground/80">
           <Link2 className="size-4" />
-          <span>Liens de partage</span>
+          <span>{t("title")}</span>
         </div>
         <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
           <Plus />
-          Nouveau lien
+          {t("newLink")}
         </Button>
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Nouveau lien de partage</SheetTitle>
-            <SheetDescription>Choisissez ce qui est demandé au visiteur avant l&apos;accès.</SheetDescription>
+            <SheetTitle>{t("sheetTitle")}</SheetTitle>
+            <SheetDescription>{t("sheetDescription")}</SheetDescription>
           </SheetHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-xs text-muted-foreground">Nom du lien</label>
+              <label className="text-xs text-muted-foreground">{t("labelField")}</label>
               <input
                 value={label}
                 onChange={(event) => setLabel(event.target.value)}
-                placeholder="Investisseurs, série A…"
+                placeholder={t("labelPlaceholder")}
                 className="w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-foreground/40"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs text-muted-foreground">Expiration (jours)</label>
+              <label className="text-xs text-muted-foreground">{t("expiryField")}</label>
               <input
                 type="number"
                 min={1}
                 value={expiresInDays}
                 onChange={(event) => setExpiresInDays(event.target.value)}
-                placeholder="Sans expiration"
+                placeholder={t("expiryPlaceholder")}
                 className="w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-foreground/40"
               />
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Identification du visiteur</p>
+              <p className="text-xs text-muted-foreground">{t("visitorIdentification")}</p>
               <Toggle
                 icon={<User className="size-3.5" />}
-                title="Demander le nom"
-                description="Le visiteur doit saisir son nom avant d'ouvrir le document."
+                title={t("askName")}
+                description={t("askNameDescription")}
                 checked={requireName}
                 onChange={setRequireName}
               />
               <Toggle
                 icon={<Mail className="size-3.5" />}
-                title="Demander l'email"
-                description={
-                  hasAllowedEmails
-                    ? "Activé automatiquement : une liste d'emails autorisés est renseignée ci-dessous."
-                    : "Le visiteur doit saisir son email avant d'ouvrir le document."
-                }
+                title={t("askEmail")}
+                description={hasAllowedEmails ? t("askEmailForced") : t("askEmailDescription")}
                 checked={requireEmail || hasAllowedEmails}
                 onChange={setRequireEmail}
                 disabled={hasAllowedEmails}
               />
               <div className="space-y-1 rounded-xl border border-border p-3">
-                <p className="text-sm text-foreground">Restreindre aux emails suivants</p>
-                <p className="text-xs text-muted-foreground">
-                  Un email par ligne (ou séparés par des virgules). Laissez vide pour n&apos;imposer aucune
-                  restriction.
-                </p>
+                <p className="text-sm text-foreground">{t("restrictTitle")}</p>
+                <p className="text-xs text-muted-foreground">{t("restrictDescription")}</p>
                 <textarea
                   value={allowedEmailsInput}
                   onChange={(event) => setAllowedEmailsInput(event.target.value)}
@@ -229,18 +227,16 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
                 />
               </div>
               {!requireName && !requireEmail && (
-                <p className="text-xs text-muted-foreground">
-                  Aucune information demandée : le document s&apos;ouvre directement et les visites seront anonymes.
-                </p>
+                <p className="text-xs text-muted-foreground">{t("anonymousNotice")}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Protection</p>
+              <p className="text-xs text-muted-foreground">{t("protection")}</p>
               <Toggle
                 icon={<Droplets className="size-3.5" />}
-                title="Filigrane"
-                description="Superpose l'identité du visiteur et la date sur le document."
+                title={t("watermark")}
+                description={t("watermarkDescription")}
                 checked={watermark}
                 onChange={setWatermark}
               />
@@ -252,10 +248,10 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
           <SheetFooter>
             <Button disabled={submitting} onClick={() => void createLink()}>
               {submitting ? <Loader2 className="animate-spin" /> : null}
-              Créer le lien
+              {t("createLink")}
             </Button>
             <Button variant="ghost" onClick={() => setOpen(false)}>
-              Annuler
+              {tCommon("cancel")}
             </Button>
           </SheetFooter>
         </SheetContent>
@@ -264,25 +260,24 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
       {error && !open && <p className="mb-2 text-xs text-destructive">{error}</p>}
 
       {links.length === 0 ? (
-        <p className="text-xs text-muted-foreground">Aucun lien de partage actif.</p>
+        <p className="text-xs text-muted-foreground">{t("empty")}</p>
       ) : (
         <div className="space-y-2">
           {links.map((link) => {
             const path = `/view/${link.token}`
             const badges = [
-              link.requireName && "nom",
-              link.requireEmail && "email",
-              link.allowedEmails.length > 0 &&
-                `${link.allowedEmails.length} email${link.allowedEmails.length !== 1 ? "s" : ""} autorisé${link.allowedEmails.length !== 1 ? "s" : ""}`,
-              link.watermark && "filigrane",
+              link.requireName && t("badges.name"),
+              link.requireEmail && t("badges.email"),
+              link.allowedEmails.length > 0 && t("badges.allowedEmails", { count: link.allowedEmails.length }),
+              link.watermark && t("badges.watermark"),
             ].filter(Boolean) as string[]
             return (
               <div key={link.id} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
                 <div className="min-w-0">
-                  <p className="truncate text-sm text-foreground">{link.label || "Lien sans nom"}</p>
+                  <p className="truncate text-sm text-foreground">{link.label || t("untitled")}</p>
                   <p className="truncate text-xs text-muted-foreground">
-                    {path} · {link.visitCount} visite{link.visitCount !== 1 ? "s" : ""}
-                    {link.expiresAt && ` · expire le ${new Date(link.expiresAt).toLocaleDateString("fr-FR")}`}
+                    {path} · {t("visitCount", { count: link.visitCount })}
+                    {link.expiresAt && t("expiresOn", { date: format.dateTime(new Date(link.expiresAt), { day: "2-digit", month: "2-digit", year: "numeric" }) })}
                     {badges.length > 0 && ` · ${badges.join(", ")}`}
                   </p>
                 </div>
@@ -293,7 +288,7 @@ export function ShareLinksClient({ createUrl, links }: { createUrl: string; link
                     size="icon-xs"
                     disabled={revoking === link.id}
                     onClick={() => void revokeLink(link.id)}
-                    aria-label="Révoquer"
+                    aria-label={t("revoke")}
                   >
                     {revoking === link.id ? <Loader2 className="animate-spin" /> : <Trash2 />}
                   </Button>

@@ -1,19 +1,20 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useTranslations } from "next-intl"
 
+import { Link, usePathname } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
 const tabs = [
-  { label: "Général", href: "/settings" },
-  { label: "Équipe", href: "/settings/team" },
-  { label: "Facturation", href: "/settings/billing" },
-  { label: "API", href: "/settings/api" },
-  { label: "Compte", href: "/settings/account" },
-]
+  { key: "general", href: "/settings" },
+  { key: "team", href: "/settings/team" },
+  { key: "billing", href: "/settings/billing" },
+  { key: "api", href: "/settings/api" },
+  { key: "account", href: "/settings/account" },
+] as const
 
 export function SettingsNav() {
+  const t = useTranslations("settings.tabs")
   const pathname = usePathname()
 
   return (
@@ -31,7 +32,7 @@ export function SettingsNav() {
                 : "border-transparent text-muted-foreground hover:text-foreground"
             )}
           >
-            {tab.label}
+            {t(tab.key)}
           </Link>
         )
       })}

@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { AlertCircle, ArrowRight, LoaderCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
+
+import { useRouter } from "@/i18n/navigation"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -11,6 +13,7 @@ import { PasswordInput } from "@/components/auth/password-input"
 import { authClient } from "@/lib/auth-client"
 
 export function ResetPasswordForm({ token }: { token: string | null }) {
+  const t = useTranslations("auth")
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
@@ -20,7 +23,7 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
     setError(null)
 
     if (!token) {
-      setError("This reset link is invalid or has expired.")
+      setError(t("reset.invalidLink"))
       return
     }
 
@@ -29,12 +32,12 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
     const passwordConfirmation = String(formData.get("passwordConfirmation") ?? "")
 
     if (newPassword !== passwordConfirmation) {
-      setError("Passwords do not match.")
+      setError(t("reset.mismatch"))
       return
     }
 
     if (newPassword.length < 8 || newPassword.length > 128) {
-      setError("Password must be between 8 and 128 characters.")
+      setError(t("reset.length"))
       return
     }
 
@@ -44,13 +47,13 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
       const result = await authClient.resetPassword({ newPassword, token })
 
       if (result.error) {
-        setError(result.error.message || "Unable to reset your password.")
+        setError(result.error.message || t("reset.failed"))
         return
       }
 
       router.replace("/login")
     } catch {
-      setError("Unable to reach the authentication service. Try again.")
+      setError(t("serviceUnreachable"))
     } finally {
       setIsSubmitting(false)
     }
@@ -66,11 +69,11 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
       ) : null}
 
       <div className="space-y-1.5">
-        <Label htmlFor="newPassword">New password</Label>
+        <Label htmlFor="newPassword">{t("reset.newPassword")}</Label>
         <PasswordInput
           id="newPassword"
           name="newPassword"
-          placeholder="8–128 characters"
+          placeholder={t("reset.newPasswordPlaceholder")}
           autoComplete="new-password"
           minLength={8}
           maxLength={128}
@@ -81,11 +84,11 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="passwordConfirmation">Confirm password</Label>
+        <Label htmlFor="passwordConfirmation">{t("reset.confirmPassword")}</Label>
         <PasswordInput
           id="passwordConfirmation"
           name="passwordConfirmation"
-          placeholder="Repeat password"
+          placeholder={t("reset.confirmPlaceholder")}
           autoComplete="new-password"
           minLength={8}
           maxLength={128}
@@ -98,11 +101,11 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
         {isSubmitting ? (
           <>
             <LoaderCircle className="animate-spin" />
-            Resetting password
+            {t("reset.submitting")}
           </>
         ) : (
           <>
-            Reset password
+            {t("reset.submit")}
             <ArrowRight data-icon="inline-end" />
           </>
         )}

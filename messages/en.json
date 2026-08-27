@@ -1,0 +1,483 @@
+{
+  "nav": {
+    "home": "Home",
+    "documents": "Documents",
+    "datarooms": "Data rooms",
+    "settings": "Settings",
+    "search": "Search",
+    "signOut": "Sign out",
+    "accountMenu": "Account menu",
+    "userMenu": "{name}'s menu",
+    "switchOrganization": "Switch organization",
+    "language": "Language"
+  },
+  "organization": {
+    "create": "Create",
+    "createAction": "Create an organization",
+    "createTitle": "Create an organization",
+    "createDescription": "You'll become the owner of this new organization.",
+    "nameLabel": "Organization name",
+    "slugLabel": "Identifier",
+    "nameRequired": "A name is required.",
+    "invalidSlug": "The identifier may only contain lowercase letters, digits and single hyphens.",
+    "createFailed": "Creation failed."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Hi <highlight>{name}</highlight>, here's how your shares are doing.",
+    "duration": {
+      "seconds": "{seconds}s",
+      "minutes": "{minutes}m {seconds}s",
+      "hours": "{hours}h {minutes}m"
+    },
+    "viewsOverview": "Views overview",
+    "rangeDays": "{days}d",
+    "dayTooltip": "{label} · {count, plural, one {# view} other {# views}}",
+    "tabs": {
+      "links": "Links",
+      "documents": "Documents",
+      "visitors": "Visitors",
+      "recent": "Recent views"
+    },
+    "columns": {
+      "link": "Link",
+      "document": "Document",
+      "visitor": "Visitor",
+      "target": "Document / data room",
+      "views": "Views",
+      "avgDuration": "Average time",
+      "duration": "Time",
+      "lastView": "Last viewed",
+      "when": "When"
+    },
+    "empty": {
+      "links": "No share links yet.",
+      "documents": "No document has been read yet.",
+      "visitors": "No visitors yet.",
+      "recent": "No recent views."
+    },
+    "anonymousVisitor": "Anonymous visitor"
+  },
+  "datarooms": {
+    "title": "Data rooms",
+    "subtitle": "Group your documents for {organization}.",
+    "emptyTitle": "No data room yet",
+    "emptyDescription": "Group your documents to prepare your exchanges.",
+    "namePlaceholder": "Data room name",
+    "descriptionPlaceholder": "Description (optional)",
+    "create": "Create",
+    "newDataroom": "New data room",
+    "deleteConfirm": "Delete the data room “{name}”?",
+    "deleteFailed": "Deletion failed.",
+    "delete": "Delete {name}",
+    "documentCount": "{count, plural, one {# document} other {# documents}}"
+  },
+  "paywall": {
+    "title": "Data rooms are part of the Pro plan",
+    "description": "Group several documents into one shareable collection behind a single link, and see who reads what.",
+    "close": "Close and go back home",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "savings": "−{percent}%",
+    "recommended": "Recommended",
+    "perMonth": "/month",
+    "billedYearly": "Billed yearly",
+    "billedMonthly": "Billed monthly",
+    "upgradeTo": "Upgrade to {plan}",
+    "trial": "{days}-day free trial, cancel any time.",
+    "askOwner": "Ask the organization owner to upgrade to a higher plan.",
+    "seeBilling": "See billing",
+    "checkoutFailed": "Could not start the payment."
+  },
+  "plans": {
+    "features": {
+      "pro": [
+        "Unlimited data rooms",
+        "Unlimited documents",
+        "Up to 5 members"
+      ],
+      "business": [
+        "Everything in Pro",
+        "Unlimited members",
+        "API access"
+      ]
+    }
+  },
+  "meta": {
+    "settings": {
+      "title": "Settings · Seend",
+      "description": "An overview of your organization."
+    },
+    "team": {
+      "title": "Team · Seend",
+      "description": "The members of your organization."
+    },
+    "billing": {
+      "title": "Billing · Seend",
+      "description": "Your organization's plan and billing."
+    },
+    "apiKeys": {
+      "title": "API · Seend",
+      "description": "Your organization's API keys."
+    },
+    "account": {
+      "title": "Account · Seend",
+      "description": "Your account settings."
+    },
+    "documents": {
+      "title": "Documents · Seend",
+      "description": "Your document library."
+    },
+    "documentDetail": {
+      "title": "Document · Seend",
+      "description": "Document details."
+    },
+    "datarooms": {
+      "title": "Data rooms · Seend",
+      "description": "Your document collections."
+    },
+    "dataroomDetail": {
+      "title": "Data room · Seend",
+      "description": "Data room details."
+    },
+    "sharedDocument": {
+      "title": "Shared document · Seend"
+    },
+    "login": {
+      "title": "Sign in · Seend",
+      "description": "Sign in to your Seend account."
+    },
+    "register": {
+      "title": "Create account · Seend",
+      "description": "Create your Seend account and organization."
+    },
+    "resetPassword": {
+      "title": "Reset password · Seend",
+      "description": "Request a password reset link for your Seend account."
+    },
+    "newPassword": {
+      "title": "New password · Seend",
+      "description": "Choose a new password for your Seend account."
+    },
+    "invitation": {
+      "title": "Invitation · Seend",
+      "description": "Accept an invitation to join an organization on Seend."
+    }
+  },
+  "auth": {
+    "shellFooter": "Secure access · Press D to toggle theme",
+    "email": "Email",
+    "emailPlaceholder": "you@company.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "serviceUnreachable": "Unable to reach the authentication service. Try again.",
+    "login": {
+      "title": "Welcome back",
+      "description": "Sign in with your work email to continue.",
+      "footerText": "New to Seend?",
+      "footerLabel": "Create an account",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign in",
+      "submitting": "Signing in",
+      "failed": "Unable to sign in."
+    },
+    "register": {
+      "title": "Create your account",
+      "description": "Set up your account and organization in one step.",
+      "footerText": "Already have an account?",
+      "footerLabel": "Sign in",
+      "name": "Name",
+      "namePlaceholder": "Jane Smith",
+      "organizationName": "Organization name",
+      "organizationPlaceholder": "Acme Inc.",
+      "slug": "Slug",
+      "slugHint": "Use lowercase letters, numbers, and single hyphens.",
+      "passwordPlaceholder": "8–128 characters",
+      "submit": "Create account",
+      "submitting": "Creating account",
+      "organizationNameRequired": "Enter an organization name.",
+      "invalidOrganization": "Enter a valid organization name and slug.",
+      "invalidSlug": "Use lowercase letters, numbers, and single hyphens for the slug.",
+      "failed": "Unable to create your account.",
+      "organizationFailed": "Your account is ready, but the organization could not be created. Try again.",
+      "termsPrefix": "By creating an account, you agree to the",
+      "terms": "Terms",
+      "termsMiddle": "and the",
+      "privacy": "privacy policy",
+      "accountCreated": "Account created",
+      "finishOrganization": "Finish setting up your organization to continue.",
+      "createOrganization": "Create organization",
+      "creatingOrganization": "Creating organization",
+      "fullName": "Full name",
+      "confirmPassword": "Confirm password",
+      "confirmPlaceholder": "Repeat password",
+      "yourOrganization": "Your organization",
+      "organizationSlug": "Organization slug",
+      "slugPlaceholder": "acme-inc",
+      "organizationCreatedFailedShort": "Your account is ready, but the organization could not be created."
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "description": "Enter your email and we'll send you a reset link.",
+      "footerText": "Remembered it?",
+      "footerLabel": "Back to sign in",
+      "sent": "If an account exists for that email, a reset link is on its way. Check your inbox.",
+      "submit": "Send reset link",
+      "submitting": "Sending link",
+      "failed": "Unable to send the reset email."
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "description": "This link is single-use and expires after an hour.",
+      "footerText": "Changed your mind?",
+      "footerLabel": "Back to sign in",
+      "newPassword": "New password",
+      "newPasswordPlaceholder": "8–128 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPlaceholder": "Repeat password",
+      "submit": "Reset password",
+      "submitting": "Resetting password",
+      "invalidLink": "This reset link is invalid or has expired.",
+      "mismatch": "Passwords do not match.",
+      "length": "Password must be between 8 and 128 characters.",
+      "failed": "Unable to reset your password."
+    },
+    "invitation": {
+      "invalidTitle": "Invalid invitation",
+      "invalidDescription": "This invitation link is missing or malformed.",
+      "invitedTitle": "You've been invited",
+      "signInDescription": "Sign in or create an account with the email that received this invitation, then open this link again.",
+      "unavailableTitle": "Invitation unavailable",
+      "unavailableDescription": "This invitation is invalid, expired, or wasn't sent to your account's email address.",
+      "joinDescription": "Join {organization} on Seend.",
+      "needHelp": "Need help?",
+      "backToSignIn": "Back to sign in",
+      "backToDashboard": "Back to dashboard",
+      "wrongAccount": "Wrong account?",
+      "accept": "Accept",
+      "decline": "Decline",
+      "failed": "Unable to process this invitation."
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "copied": "Copied",
+    "bytes": [
+      "B",
+      "KB",
+      "MB",
+      "GB"
+    ],
+    "nameRequired": "A name is required.",
+    "createFailed": "Creation failed."
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "general": "General",
+      "team": "Team",
+      "billing": "Billing",
+      "api": "API",
+      "account": "Account"
+    },
+    "rows": {
+      "organizationName": "Organization name",
+      "slug": "Identifier",
+      "yourRole": "Your role",
+      "members": "Members",
+      "documents": "Documents",
+      "storageUsed": "Storage used"
+    }
+  },
+  "account": {
+    "passwordTitle": "Password",
+    "signedInAs": "Signed in as {email}.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "changePassword": "Change password",
+    "passwordUpdated": "Password updated.",
+    "passwordMismatch": "The passwords don't match.",
+    "passwordLength": "The password must be between 8 and 128 characters.",
+    "changeFailed": "Changing the password failed.",
+    "deleteTitle": "Delete account",
+    "deleteDescription": "Permanent. You lose access to this account; organizations where you are the only member stay intact but without an owner.",
+    "deleteConfirm": "Permanently delete your account? This cannot be undone.",
+    "confirmPassword": "Confirm your password",
+    "deletePermanently": "Delete permanently",
+    "deleteFailed": "Deletion failed."
+  },
+  "apiKeys": {
+    "title": "API keys",
+    "description": "Automate document uploads, data room creation and share links.",
+    "newKey": "New key",
+    "copyNow": "Copy this key now",
+    "copyNowDescription": "It will never be shown again. If you lose it, revoke it and create a new one.",
+    "copiedAcknowledge": "I've copied the key",
+    "nameLabel": "Key name",
+    "namePlaceholder": "CRM integration",
+    "createKey": "Create key",
+    "emptyTitle": "No API keys",
+    "emptyDescription": "Create a key to drive Seend from your own tools.",
+    "createdOn": "created on {date}",
+    "lastUsedOn": " · last used on {date}",
+    "neverUsed": " · never used",
+    "revoke": "Revoke {name}",
+    "revokeConfirm": "Revoke the key “{name}”? Integrations using it will stop working.",
+    "revokeFailed": "Revocation failed.",
+    "usageTitle": "Usage",
+    "usageDescription": "Authenticate every request with the <code>Authorization: Bearer</code> header."
+  },
+  "shareLinks": {
+    "title": "Share links",
+    "newLink": "New link",
+    "sheetTitle": "New share link",
+    "sheetDescription": "Choose what the visitor is asked for before they get access.",
+    "labelField": "Link name",
+    "labelPlaceholder": "Investors, series A…",
+    "expiryField": "Expiry (days)",
+    "expiryPlaceholder": "No expiry",
+    "visitorIdentification": "Visitor identification",
+    "askName": "Ask for a name",
+    "askNameDescription": "The visitor must enter their name before opening the document.",
+    "askEmail": "Ask for an email",
+    "askEmailDescription": "The visitor must enter their email before opening the document.",
+    "askEmailForced": "Enabled automatically: a list of allowed emails is set below.",
+    "restrictTitle": "Restrict to these emails",
+    "restrictDescription": "One email per line (or comma-separated). Leave empty for no restriction.",
+    "anonymousNotice": "Nothing is asked: the document opens straight away and visits will be anonymous.",
+    "protection": "Protection",
+    "watermark": "Watermark",
+    "watermarkDescription": "Overlays the visitor's identity and the date on the document.",
+    "createLink": "Create link",
+    "createFailed": "Creation failed.",
+    "revokeConfirm": "Revoke this link? It will no longer be accessible.",
+    "revokeFailed": "Revocation failed.",
+    "revoke": "Revoke",
+    "copyLink": "Copy link",
+    "empty": "No active share links.",
+    "untitled": "Untitled link",
+    "visitCount": "{count, plural, one {# visit} other {# visits}}",
+    "expiresOn": " · expires on {date}",
+    "badges": {
+      "name": "name",
+      "email": "email",
+      "watermark": "watermark",
+      "allowedEmails": "{count, plural, one {# allowed email} other {# allowed emails}}"
+    }
+  },
+  "visits": {
+    "title": "Visits",
+    "empty": "Nobody has opened this document through a share link yet.",
+    "anonymous": "Anonymous visitor",
+    "online": "Online",
+    "pageTimeTitle": "Time spent per page",
+    "pageTooltip": "Page {page} — {seconds}s"
+  },
+  "billing": {
+    "title": "Billing",
+    "planLine": "{plan} plan",
+    "manage": "Manage billing",
+    "activated": "Subscription activated.",
+    "unlimited": "unlimited",
+    "checkoutFailed": "Could not start the payment.",
+    "portalFailed": "Could not open billing.",
+    "canceledUntil": "Cancelled, active until {date}",
+    "trialUntil": "Free trial until {date}",
+    "pastDue": "Payment failed, card update required",
+    "renewsOn": "Renews on {date}",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "perMonth": "€{price}/month",
+    "upgradeTo": "Upgrade to {plan}",
+    "ownerOnly": "Only the organization owner can change plans.",
+    "usage": {
+      "members": "Members",
+      "documents": "Documents",
+      "datarooms": "Data rooms"
+    }
+  },
+  "view": {
+    "sharedDataroom": "Shared data room",
+    "sharedDocument": "Shared document",
+    "gatePrompt": "Enter your details to continue.",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "continue": "Continue",
+    "genericError": "Something went wrong.",
+    "pageFailed": "This page could not be displayed.",
+    "pageAlt": "{name} — page {page} of {total}",
+    "tooManyTitle": "Too many requests.",
+    "tooManyDescription": "Try again in a few minutes.",
+    "linkUnavailable": "This link is no longer available.",
+    "linkUnavailableHint": "It may have expired or been revoked.",
+    "documentUnavailable": "This document cannot be displayed.",
+    "documentUnavailableHint": "Contact whoever sent you this link.",
+    "emptyDataroom": "This data room contains no documents."
+  },
+  "apiPaywall": {
+    "title": "The API is part of the Business plan",
+    "description": "Drive Seend from your own tools: upload documents, create data rooms and generate share links programmatically.",
+    "upgrade": "Upgrade to Business",
+    "askOwner": "Ask the organization owner to upgrade to the Business plan."
+  },
+  "documents": {
+    "title": "Documents",
+    "subtitle": "The private library of {organization}.",
+    "dropzone": "Drop your files here or click to browse",
+    "dropzoneHint": "PDF or image (JPG, PNG, WebP, GIF) · {max} max per file",
+    "tooManyFiles": "You can upload {max} files at a time.",
+    "invalidFile": "{name} must be a PDF or an image (JPG, PNG, WebP, GIF) of at most {max}.",
+    "finalizeFailed": "Could not finalize",
+    "uploadFailed": "Failed",
+    "uploadDone": "Done",
+    "deleteConfirm": "Permanently delete “{name}”?",
+    "deleteFailed": "Deletion failed.",
+    "emptyTitle": "No documents yet",
+    "emptyDescription": "The files in your workspace will show up here.",
+    "columns": {
+      "document": "Document",
+      "size": "Size",
+      "uploadedBy": "Added by"
+    },
+    "open": "Open {name}",
+    "download": "Download {name}",
+    "delete": "Delete {name}",
+    "detail": {
+      "noPreview": "No preview available for this file type.",
+      "type": "Type",
+      "addedOn": "Added on",
+      "open": "Open",
+      "download": "Download",
+      "delete": "Delete",
+      "noDataroom": "This document is not in any data room."
+    }
+  },
+  "dataroomDetail": {
+    "close": "Close",
+    "addDocuments": "Add documents",
+    "availableDocuments": "Available documents",
+    "allAlreadyIn": "Every document in your workspace is already in this data room.",
+    "emptyTitle": "No documents in this data room",
+    "emptyDescription": "Add documents from your library.",
+    "addFailed": "Adding failed.",
+    "removeFailed": "Removing failed.",
+    "add": "Add {name}",
+    "remove": "Remove {name}"
+  },
+  "team": {
+    "rolesMember": "Member",
+    "rolesAdmin": "Admin",
+    "emailPlaceholder": "email@example.com",
+    "sendInvitation": "Send invitation",
+    "inviteMember": "Invite a member",
+    "pendingInvitations": "Pending invitations",
+    "cancelInvitation": "Cancel the invitation for {email}",
+    "emailRequired": "An email is required.",
+    "inviteFailed": "The invitation failed.",
+    "cancelFailed": "Cancelling failed."
+  }
+}

@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { AlertCircle, LoaderCircle } from "lucide-react"
+import { useTranslations } from "next-intl"
+
+import { useRouter } from "@/i18n/navigation"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -17,6 +19,7 @@ export function AcceptInvitationForm({
   organizationName: string
   inviterEmail: string
 }) {
+  const t = useTranslations("auth")
   const router = useRouter()
   const [pending, setPending] = React.useState<"accept" | "reject" | null>(null)
   const [error, setError] = React.useState<string | null>(null)
@@ -32,14 +35,14 @@ export function AcceptInvitationForm({
           : await authClient.organization.rejectInvitation({ invitationId })
 
       if (result.error) {
-        setError(result.error.message || "Unable to process this invitation.")
+        setError(result.error.message || t("invitation.failed"))
         return
       }
 
       router.replace("/")
       router.refresh()
     } catch {
-      setError("Unable to reach the authentication service. Try again.")
+      setError(t("serviceUnreachable"))
     } finally {
       setPending(null)
     }
@@ -62,7 +65,7 @@ export function AcceptInvitationForm({
       <div className="flex gap-2">
         <Button className="flex-1" disabled={pending !== null} onClick={() => void respond("accept")}>
           {pending === "accept" ? <LoaderCircle className="animate-spin" /> : null}
-          Accept
+          {t("invitation.accept")}
         </Button>
         <Button
           variant="outline"
@@ -71,7 +74,7 @@ export function AcceptInvitationForm({
           onClick={() => void respond("reject")}
         >
           {pending === "reject" ? <LoaderCircle className="animate-spin" /> : null}
-          Decline
+          {t("invitation.decline")}
         </Button>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Eye, EyeOff } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,6 +10,7 @@ import { Input } from "@/components/ui/input"
 type PasswordInputProps = Omit<React.ComponentProps<typeof Input>, "type">
 
 export function PasswordInput(props: PasswordInputProps) {
+  const t = useTranslations("auth")
   const [visible, setVisible] = React.useState(false)
 
   return (
@@ -19,7 +21,7 @@ export function PasswordInput(props: PasswordInputProps) {
         variant="ghost"
         size="icon-sm"
         className="absolute top-1/2 right-0.5 -translate-y-1/2"
-        aria-label={visible ? "Hide password" : "Show password"}
+        aria-label={visible ? t("hidePassword") : t("showPassword")}
         aria-pressed={visible}
         onClick={() => setVisible((current) => !current)}
       >

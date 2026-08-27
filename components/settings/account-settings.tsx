@@ -1,15 +1,17 @@
 "use client"
 
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { PasswordInput } from "@/components/auth/password-input"
+import { useRouter } from "@/i18n/navigation"
 import { authClient } from "@/lib/auth-client"
 
 export function AccountSettings({ userEmail }: { userEmail: string }) {
+  const t = useTranslations("account")
   const router = useRouter()
 
   const [currentPassword, setCurrentPassword] = useState("")
@@ -29,11 +31,11 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
     setPasswordSuccess(false)
 
     if (newPassword !== newPasswordConfirmation) {
-      setPasswordError("Les mots de passe ne correspondent pas.")
+      setPasswordError(t("passwordMismatch"))
       return
     }
     if (newPassword.length < 8 || newPassword.length > 128) {
-      setPasswordError("Le mot de passe doit contenir entre 8 et 128 caractères.")
+      setPasswordError(t("passwordLength"))
       return
     }
 
@@ -46,7 +48,7 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
     setChangingPassword(false)
 
     if (result.error) {
-      setPasswordError(result.error.message || "Le changement de mot de passe a échoué.")
+      setPasswordError(result.error.message || t("changeFailed"))
       return
     }
 
@@ -60,14 +62,14 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
     event.preventDefault()
     setDeleteError(null)
 
-    if (!window.confirm("Supprimer définitivement ton compte ? Cette action est irréversible.")) return
+    if (!window.confirm(t("deleteConfirm"))) return
 
     setDeleting(true)
     const result = await authClient.deleteUser({ password: deletePassword })
     setDeleting(false)
 
     if (result.error) {
-      setDeleteError(result.error.message || "La suppression a échoué.")
+      setDeleteError(result.error.message || t("deleteFailed"))
       return
     }
 
@@ -78,8 +80,8 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
   return (
     <div className="space-y-6">
       <form onSubmit={changePassword} className="rounded-2xl border border-border p-5">
-        <h2 className="mb-1 text-sm font-medium text-foreground">Mot de passe</h2>
-        <p className="mb-4 text-xs text-muted-foreground">Connecté en tant que {userEmail}.</p>
+        <h2 className="mb-1 text-sm font-medium text-foreground">{t("passwordTitle")}</h2>
+        <p className="mb-4 text-xs text-muted-foreground">{t("signedInAs", { email: userEmail })}</p>
 
         {passwordError && (
           <Alert variant="destructive" className="mb-3">
@@ -90,13 +92,13 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
         {passwordSuccess && (
           <Alert className="mb-3">
             <CheckCircle2 />
-            <AlertDescription>Mot de passe mis à jour.</AlertDescription>
+            <AlertDescription>{t("passwordUpdated")}</AlertDescription>
           </Alert>
         )}
 
         <div className="grid gap-3 sm:grid-cols-3">
           <PasswordInput
-            placeholder="Mot de passe actuel"
+            placeholder={t("currentPassword")}
             autoComplete="current-password"
             value={currentPassword}
             onChange={(event) => setCurrentPassword(event.target.value)}
@@ -104,7 +106,7 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
             disabled={changingPassword}
           />
           <PasswordInput
-            placeholder="Nouveau mot de passe"
+            placeholder={t("newPassword")}
             autoComplete="new-password"
             minLength={8}
             maxLength={128}
@@ -114,7 +116,7 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
             disabled={changingPassword}
           />
           <PasswordInput
-            placeholder="Confirmer le nouveau mot de passe"
+            placeholder={t("confirmNewPassword")}
             autoComplete="new-password"
             minLength={8}
             maxLength={128}
@@ -127,16 +129,13 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
 
         <Button type="submit" className="mt-4" disabled={changingPassword}>
           {changingPassword ? <Loader2 className="animate-spin" /> : null}
-          Changer le mot de passe
+          {t("changePassword")}
         </Button>
       </form>
 
       <form onSubmit={deleteAccount} className="rounded-2xl border border-destructive/30 p-5">
-        <h2 className="mb-1 text-sm font-medium text-destructive">Supprimer le compte</h2>
-        <p className="mb-4 text-xs text-muted-foreground">
-          Définitif. Tu perds l&apos;accès à ce compte ; les organisations dont tu es le seul membre restent
-          intactes mais sans propriétaire.
-        </p>
+        <h2 className="mb-1 text-sm font-medium text-destructive">{t("deleteTitle")}</h2>
+        <p className="mb-4 text-xs text-muted-foreground">{t("deleteDescription")}</p>
 
         {deleteError && (
           <Alert variant="destructive" className="mb-3">
@@ -147,7 +146,7 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
 
         <div className="flex flex-wrap items-center gap-3">
           <PasswordInput
-            placeholder="Confirme ton mot de passe"
+            placeholder={t("confirmPassword")}
             autoComplete="current-password"
             value={deletePassword}
             onChange={(event) => setDeletePassword(event.target.value)}
@@ -157,7 +156,7 @@ export function AccountSettings({ userEmail }: { userEmail: string }) {
           />
           <Button type="submit" variant="destructive" disabled={deleting}>
             {deleting ? <Loader2 className="animate-spin" /> : null}
-            Supprimer définitivement
+            {t("deletePermanently")}
           </Button>
         </div>
       </form>

@@ -89,3 +89,37 @@ export async function getPageStats(documentId: string): Promise<Map<number, numb
 
   return new Map(grouped.map((row) => [row.pageNumber as number, row._sum.seconds ?? 0]))
 }
+
+/**
+ * Per-visit active time on each of several documents, keyed by document then
+ * by visit. Answers "how many people read this document, and for how long"
+ * for a whole list of documents in one query — the dashboard needs it for
+ * every document in the organization at once.
+ *
+ * Attributing by documentId (rather than by the visit's share link) is what
+ * makes a dataroom visit count towards each document it actually touched.
+ */
+export async function getDocumentVisitStats(
+  documentIds: string[]
+): Promise<Map<string, Map<string, VisitStats>>> {
+  if (documentIds.length === 0) return new Map()
+
+  const grouped = await prisma.shareLinkPing.groupBy({
+    by: ["documentId", "visitId"],
+    where: { documentId: { in: documentIds } },
+    _sum: { seconds: true },
+    _max: { createdAt: true },
+  })
+
+  const byDocument = new Map<string, Map<string, VisitStats>>()
+  for (const row of grouped) {
+    const documentId = row.documentId as string
+    const perVisit = byDocument.get(documentId) ?? new Map<string, VisitStats>()
+    perVisit.set(row.visitId, {
+      activeSeconds: row._sum.seconds ?? 0,
+      lastSeenAt: row._max.createdAt ?? new Date(0),
+    })
+    byDocument.set(documentId, perVisit)
+  }
+  return byDocument
+}

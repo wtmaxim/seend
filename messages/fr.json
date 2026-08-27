@@ -1,0 +1,483 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "documents": "Documents",
+    "datarooms": "Datarooms",
+    "settings": "Paramètres",
+    "search": "Rechercher",
+    "signOut": "Se déconnecter",
+    "accountMenu": "Menu du compte",
+    "userMenu": "Menu de {name}",
+    "switchOrganization": "Changer d'organisation",
+    "language": "Langue"
+  },
+  "organization": {
+    "create": "Créer",
+    "createAction": "Créer une organisation",
+    "createTitle": "Créer une organisation",
+    "createDescription": "Tu deviendras propriétaire de cette nouvelle organisation.",
+    "nameLabel": "Nom de l'organisation",
+    "slugLabel": "Identifiant",
+    "nameRequired": "Le nom est requis.",
+    "invalidSlug": "L'identifiant doit contenir des lettres minuscules, chiffres et tirets simples.",
+    "createFailed": "La création a échoué."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Bonjour <highlight>{name}</highlight>, voici l'activité de vos partages.",
+    "duration": {
+      "seconds": "{seconds}s",
+      "minutes": "{minutes}min {seconds}s",
+      "hours": "{hours}h {minutes}min"
+    },
+    "viewsOverview": "Aperçu des vues",
+    "rangeDays": "{days}j",
+    "dayTooltip": "{label} · {count, plural, one {# vue} other {# vues}}",
+    "tabs": {
+      "links": "Liens",
+      "documents": "Documents",
+      "visitors": "Visiteurs",
+      "recent": "Vues récentes"
+    },
+    "columns": {
+      "link": "Lien",
+      "document": "Document",
+      "visitor": "Visiteur",
+      "target": "Document / dataroom",
+      "views": "Vues",
+      "avgDuration": "Durée moyenne",
+      "duration": "Durée",
+      "lastView": "Dernière vue",
+      "when": "Quand"
+    },
+    "empty": {
+      "links": "Aucun lien de partage pour l'instant.",
+      "documents": "Aucun document consulté pour l'instant.",
+      "visitors": "Aucun visiteur pour l'instant.",
+      "recent": "Aucune vue récente."
+    },
+    "anonymousVisitor": "Visiteur anonyme"
+  },
+  "datarooms": {
+    "title": "Datarooms",
+    "subtitle": "Regroupez vos documents pour {organization}.",
+    "emptyTitle": "Aucune dataroom pour le moment",
+    "emptyDescription": "Regroupez vos documents pour préparer vos échanges.",
+    "namePlaceholder": "Nom de la dataroom",
+    "descriptionPlaceholder": "Description (optionnel)",
+    "create": "Créer",
+    "newDataroom": "Nouvelle dataroom",
+    "deleteConfirm": "Supprimer la dataroom « {name} » ?",
+    "deleteFailed": "La suppression a échoué.",
+    "delete": "Supprimer {name}",
+    "documentCount": "{count, plural, one {# document} other {# documents}}"
+  },
+  "paywall": {
+    "title": "Les datarooms font partie du plan Pro",
+    "description": "Regroupez plusieurs documents dans une collection partageable avec un seul lien, et suivez qui lit quoi.",
+    "close": "Fermer et revenir à l'accueil",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "savings": "−{percent}%",
+    "recommended": "Recommandé",
+    "perMonth": "/mois",
+    "billedYearly": "Facturé annuellement",
+    "billedMonthly": "Facturé mensuellement",
+    "upgradeTo": "Passer à {plan}",
+    "trial": "{days} jours d'essai gratuit, résiliable à tout moment.",
+    "askOwner": "Demandez au propriétaire de l'organisation de passer à un plan supérieur.",
+    "seeBilling": "Voir la facturation",
+    "checkoutFailed": "Impossible de démarrer le paiement."
+  },
+  "plans": {
+    "features": {
+      "pro": [
+        "Datarooms illimitées",
+        "Documents illimités",
+        "Jusqu'à 5 membres"
+      ],
+      "business": [
+        "Tout le plan Pro",
+        "Membres illimités",
+        "Accès à l'API"
+      ]
+    }
+  },
+  "meta": {
+    "settings": {
+      "title": "Paramètres · Seend",
+      "description": "Aperçu de votre organisation."
+    },
+    "team": {
+      "title": "Équipe · Seend",
+      "description": "Les membres de votre organisation."
+    },
+    "billing": {
+      "title": "Facturation · Seend",
+      "description": "Plan et facturation de votre organisation."
+    },
+    "apiKeys": {
+      "title": "API · Seend",
+      "description": "Clés API de votre organisation."
+    },
+    "account": {
+      "title": "Compte · Seend",
+      "description": "Paramètres de votre compte."
+    },
+    "documents": {
+      "title": "Documents · Seend",
+      "description": "Votre bibliothèque de documents."
+    },
+    "documentDetail": {
+      "title": "Document · Seend",
+      "description": "Détail du document."
+    },
+    "datarooms": {
+      "title": "Datarooms · Seend",
+      "description": "Vos collections de documents."
+    },
+    "dataroomDetail": {
+      "title": "Dataroom · Seend",
+      "description": "Détail de la dataroom."
+    },
+    "sharedDocument": {
+      "title": "Document partagé · Seend"
+    },
+    "login": {
+      "title": "Connexion · Seend",
+      "description": "Connectez-vous à votre compte Seend."
+    },
+    "register": {
+      "title": "Créer un compte · Seend",
+      "description": "Créez votre compte Seend et votre organisation."
+    },
+    "resetPassword": {
+      "title": "Réinitialiser le mot de passe · Seend",
+      "description": "Demandez un lien de réinitialisation pour votre compte Seend."
+    },
+    "newPassword": {
+      "title": "Nouveau mot de passe · Seend",
+      "description": "Choisissez un nouveau mot de passe pour votre compte Seend."
+    },
+    "invitation": {
+      "title": "Invitation · Seend",
+      "description": "Acceptez une invitation à rejoindre une organisation sur Seend."
+    }
+  },
+  "auth": {
+    "shellFooter": "Accès sécurisé · Appuyez sur D pour changer de thème",
+    "email": "Email",
+    "emailPlaceholder": "vous@entreprise.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Saisissez votre mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "serviceUnreachable": "Impossible de joindre le service d'authentification. Réessayez.",
+    "login": {
+      "title": "Bon retour",
+      "description": "Connectez-vous avec votre email professionnel pour continuer.",
+      "footerText": "Nouveau sur Seend ?",
+      "footerLabel": "Créer un compte",
+      "forgotPassword": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "submitting": "Connexion en cours",
+      "failed": "Connexion impossible."
+    },
+    "register": {
+      "title": "Créez votre compte",
+      "description": "Configurez votre compte et votre organisation en une étape.",
+      "footerText": "Vous avez déjà un compte ?",
+      "footerLabel": "Se connecter",
+      "name": "Nom",
+      "namePlaceholder": "Jane Smith",
+      "organizationName": "Nom de l'organisation",
+      "organizationPlaceholder": "Acme Inc.",
+      "slug": "Identifiant",
+      "slugHint": "Utilisez des lettres minuscules, des chiffres et des tirets simples.",
+      "passwordPlaceholder": "8–128 caractères",
+      "submit": "Créer le compte",
+      "submitting": "Création du compte",
+      "organizationNameRequired": "Saisissez un nom d'organisation.",
+      "invalidOrganization": "Saisissez un nom et un identifiant d'organisation valides.",
+      "invalidSlug": "Utilisez des lettres minuscules, des chiffres et des tirets simples pour l'identifiant.",
+      "failed": "Impossible de créer votre compte.",
+      "organizationFailed": "Votre compte est prêt, mais l'organisation n'a pas pu être créée. Réessayez.",
+      "termsPrefix": "En créant un compte, vous acceptez les",
+      "terms": "CGU",
+      "termsMiddle": "et la",
+      "privacy": "politique de confidentialité",
+      "accountCreated": "Compte créé",
+      "finishOrganization": "Terminez la configuration de votre organisation pour continuer.",
+      "createOrganization": "Créer l'organisation",
+      "creatingOrganization": "Création de l'organisation",
+      "fullName": "Nom complet",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPlaceholder": "Répétez le mot de passe",
+      "yourOrganization": "Votre organisation",
+      "organizationSlug": "Identifiant de l'organisation",
+      "slugPlaceholder": "acme-inc",
+      "organizationCreatedFailedShort": "Votre compte est prêt, mais l'organisation n'a pas pu être créée."
+    },
+    "forgot": {
+      "title": "Mot de passe oublié ?",
+      "description": "Saisissez votre email et nous vous enverrons un lien de réinitialisation.",
+      "footerText": "Ça vous revient ?",
+      "footerLabel": "Retour à la connexion",
+      "sent": "Si un compte existe pour cet email, un lien de réinitialisation est en route. Vérifiez votre boîte de réception.",
+      "submit": "Envoyer le lien",
+      "submitting": "Envoi du lien",
+      "failed": "Impossible d'envoyer l'email de réinitialisation."
+    },
+    "reset": {
+      "title": "Choisissez un nouveau mot de passe",
+      "description": "Ce lien est à usage unique et expire après une heure.",
+      "footerText": "Vous avez changé d'avis ?",
+      "footerLabel": "Retour à la connexion",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordPlaceholder": "8–128 caractères",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPlaceholder": "Répétez le mot de passe",
+      "submit": "Réinitialiser le mot de passe",
+      "submitting": "Réinitialisation en cours",
+      "invalidLink": "Ce lien de réinitialisation est invalide ou a expiré.",
+      "mismatch": "Les mots de passe ne correspondent pas.",
+      "length": "Le mot de passe doit contenir entre 8 et 128 caractères.",
+      "failed": "Impossible de réinitialiser votre mot de passe."
+    },
+    "invitation": {
+      "invalidTitle": "Invitation invalide",
+      "invalidDescription": "Ce lien d'invitation est manquant ou mal formé.",
+      "invitedTitle": "Vous avez été invité",
+      "signInDescription": "Connectez-vous ou créez un compte avec l'email qui a reçu cette invitation, puis rouvrez ce lien.",
+      "unavailableTitle": "Invitation indisponible",
+      "unavailableDescription": "Cette invitation est invalide, expirée, ou n'a pas été envoyée à l'adresse email de votre compte.",
+      "joinDescription": "Rejoignez {organization} sur Seend.",
+      "needHelp": "Besoin d'aide ?",
+      "backToSignIn": "Retour à la connexion",
+      "backToDashboard": "Retour au tableau de bord",
+      "wrongAccount": "Mauvais compte ?",
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "failed": "Impossible de traiter cette invitation."
+    }
+  },
+  "common": {
+    "cancel": "Annuler",
+    "copy": "Copier",
+    "copied": "Copié",
+    "bytes": [
+      "o",
+      "Ko",
+      "Mo",
+      "Go"
+    ],
+    "nameRequired": "Le nom est requis.",
+    "createFailed": "La création a échoué."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "tabs": {
+      "general": "Général",
+      "team": "Équipe",
+      "billing": "Facturation",
+      "api": "API",
+      "account": "Compte"
+    },
+    "rows": {
+      "organizationName": "Nom de l'organisation",
+      "slug": "Identifiant",
+      "yourRole": "Votre rôle",
+      "members": "Membres",
+      "documents": "Documents",
+      "storageUsed": "Stockage utilisé"
+    }
+  },
+  "account": {
+    "passwordTitle": "Mot de passe",
+    "signedInAs": "Connecté en tant que {email}.",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "passwordUpdated": "Mot de passe mis à jour.",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "passwordLength": "Le mot de passe doit contenir entre 8 et 128 caractères.",
+    "changeFailed": "Le changement de mot de passe a échoué.",
+    "deleteTitle": "Supprimer le compte",
+    "deleteDescription": "Définitif. Tu perds l'accès à ce compte ; les organisations dont tu es le seul membre restent intactes mais sans propriétaire.",
+    "deleteConfirm": "Supprimer définitivement ton compte ? Cette action est irréversible.",
+    "confirmPassword": "Confirme ton mot de passe",
+    "deletePermanently": "Supprimer définitivement",
+    "deleteFailed": "La suppression a échoué."
+  },
+  "apiKeys": {
+    "title": "Clés API",
+    "description": "Automatise l'upload de documents, la création de datarooms et de liens de partage.",
+    "newKey": "Nouvelle clé",
+    "copyNow": "Copie cette clé maintenant",
+    "copyNowDescription": "Elle ne sera plus jamais affichée. Si tu la perds, révoque-la et crées-en une nouvelle.",
+    "copiedAcknowledge": "J'ai copié la clé",
+    "nameLabel": "Nom de la clé",
+    "namePlaceholder": "Intégration CRM",
+    "createKey": "Créer la clé",
+    "emptyTitle": "Aucune clé API",
+    "emptyDescription": "Crée une clé pour piloter Seend depuis tes propres outils.",
+    "createdOn": "créée le {date}",
+    "lastUsedOn": " · dernière utilisation le {date}",
+    "neverUsed": " · jamais utilisée",
+    "revoke": "Révoquer {name}",
+    "revokeConfirm": "Révoquer la clé « {name} » ? Les intégrations qui l'utilisent cesseront de fonctionner.",
+    "revokeFailed": "La révocation a échoué.",
+    "usageTitle": "Utilisation",
+    "usageDescription": "Authentifie chaque requête avec l'en-tête <code>Authorization: Bearer</code>."
+  },
+  "shareLinks": {
+    "title": "Liens de partage",
+    "newLink": "Nouveau lien",
+    "sheetTitle": "Nouveau lien de partage",
+    "sheetDescription": "Choisissez ce qui est demandé au visiteur avant l'accès.",
+    "labelField": "Nom du lien",
+    "labelPlaceholder": "Investisseurs, série A…",
+    "expiryField": "Expiration (jours)",
+    "expiryPlaceholder": "Sans expiration",
+    "visitorIdentification": "Identification du visiteur",
+    "askName": "Demander le nom",
+    "askNameDescription": "Le visiteur doit saisir son nom avant d'ouvrir le document.",
+    "askEmail": "Demander l'email",
+    "askEmailDescription": "Le visiteur doit saisir son email avant d'ouvrir le document.",
+    "askEmailForced": "Activé automatiquement : une liste d'emails autorisés est renseignée ci-dessous.",
+    "restrictTitle": "Restreindre aux emails suivants",
+    "restrictDescription": "Un email par ligne (ou séparés par des virgules). Laissez vide pour n'imposer aucune restriction.",
+    "anonymousNotice": "Aucune information demandée : le document s'ouvre directement et les visites seront anonymes.",
+    "protection": "Protection",
+    "watermark": "Filigrane",
+    "watermarkDescription": "Superpose l'identité du visiteur et la date sur le document.",
+    "createLink": "Créer le lien",
+    "createFailed": "La création a échoué.",
+    "revokeConfirm": "Révoquer ce lien ? Il ne sera plus accessible.",
+    "revokeFailed": "La révocation a échoué.",
+    "revoke": "Révoquer",
+    "copyLink": "Copier le lien",
+    "empty": "Aucun lien de partage actif.",
+    "untitled": "Lien sans nom",
+    "visitCount": "{count, plural, one {# visite} other {# visites}}",
+    "expiresOn": " · expire le {date}",
+    "badges": {
+      "name": "nom",
+      "email": "email",
+      "watermark": "filigrane",
+      "allowedEmails": "{count, plural, one {# email autorisé} other {# emails autorisés}}"
+    }
+  },
+  "visits": {
+    "title": "Visites",
+    "empty": "Personne n'a encore consulté ce document via un lien partagé.",
+    "anonymous": "Visiteur anonyme",
+    "online": "En ligne",
+    "pageTimeTitle": "Temps passé par page",
+    "pageTooltip": "Page {page} — {seconds}s"
+  },
+  "billing": {
+    "title": "Facturation",
+    "planLine": "Plan {plan}",
+    "manage": "Gérer la facturation",
+    "activated": "Abonnement activé.",
+    "unlimited": "illimité",
+    "checkoutFailed": "Impossible de démarrer le paiement.",
+    "portalFailed": "Impossible d'ouvrir la facturation.",
+    "canceledUntil": "Annulé, actif jusqu'au {date}",
+    "trialUntil": "Essai gratuit jusqu'au {date}",
+    "pastDue": "Paiement échoué, mise à jour de la carte requise",
+    "renewsOn": "Renouvellement le {date}",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "perMonth": "{price}€/mois",
+    "upgradeTo": "Passer à {plan}",
+    "ownerOnly": "Seul le propriétaire de l'organisation peut changer de plan.",
+    "usage": {
+      "members": "Membres",
+      "documents": "Documents",
+      "datarooms": "Datarooms"
+    }
+  },
+  "view": {
+    "sharedDataroom": "Dataroom partagée",
+    "sharedDocument": "Document partagé",
+    "gatePrompt": "Entrez vos informations pour continuer.",
+    "namePlaceholder": "Nom",
+    "emailPlaceholder": "Email",
+    "continue": "Continuer",
+    "genericError": "Une erreur est survenue.",
+    "pageFailed": "Cette page n'a pas pu être affichée.",
+    "pageAlt": "{name} — page {page} sur {total}",
+    "tooManyTitle": "Trop de requêtes.",
+    "tooManyDescription": "Réessayez dans quelques minutes.",
+    "linkUnavailable": "Ce lien n'est plus disponible.",
+    "linkUnavailableHint": "Il a peut-être expiré ou a été révoqué.",
+    "documentUnavailable": "Ce document ne peut pas être affiché.",
+    "documentUnavailableHint": "Contactez la personne qui vous a envoyé ce lien.",
+    "emptyDataroom": "Cette dataroom ne contient aucun document."
+  },
+  "apiPaywall": {
+    "title": "L'API fait partie du plan Business",
+    "description": "Pilote Seend depuis tes propres outils : uploader des documents, créer des datarooms et générer des liens de partage par programmation.",
+    "upgrade": "Passer à Business",
+    "askOwner": "Demande au propriétaire de l'organisation de passer au plan Business."
+  },
+  "documents": {
+    "title": "Documents",
+    "subtitle": "La bibliothèque privée de {organization}.",
+    "dropzone": "Déposez vos fichiers ici ou cliquez pour parcourir",
+    "dropzoneHint": "PDF ou image (JPG, PNG, WebP, GIF) · {max} maximum par fichier",
+    "tooManyFiles": "Vous pouvez envoyer {max} fichiers à la fois.",
+    "invalidFile": "{name} doit être un PDF ou une image (JPG, PNG, WebP, GIF) de {max} maximum.",
+    "finalizeFailed": "Finalisation impossible",
+    "uploadFailed": "Échec",
+    "uploadDone": "Terminé",
+    "deleteConfirm": "Supprimer « {name} » définitivement ?",
+    "deleteFailed": "La suppression a échoué.",
+    "emptyTitle": "Aucun document pour le moment",
+    "emptyDescription": "Les fichiers de votre espace apparaîtront ici.",
+    "columns": {
+      "document": "Document",
+      "size": "Taille",
+      "uploadedBy": "Ajouté par"
+    },
+    "open": "Ouvrir {name}",
+    "download": "Télécharger {name}",
+    "delete": "Supprimer {name}",
+    "detail": {
+      "noPreview": "Aperçu non disponible pour ce type de fichier.",
+      "type": "Type",
+      "addedOn": "Ajouté le",
+      "open": "Ouvrir",
+      "download": "Télécharger",
+      "delete": "Supprimer",
+      "noDataroom": "Ce document n'est dans aucune dataroom."
+    }
+  },
+  "dataroomDetail": {
+    "close": "Fermer",
+    "addDocuments": "Ajouter des documents",
+    "availableDocuments": "Documents disponibles",
+    "allAlreadyIn": "Tous les documents de votre espace sont déjà dans cette dataroom.",
+    "emptyTitle": "Aucun document dans cette dataroom",
+    "emptyDescription": "Ajoutez des documents depuis votre bibliothèque.",
+    "addFailed": "L'ajout a échoué.",
+    "removeFailed": "Le retrait a échoué.",
+    "add": "Ajouter {name}",
+    "remove": "Retirer {name}"
+  },
+  "team": {
+    "rolesMember": "Membre",
+    "rolesAdmin": "Admin",
+    "emailPlaceholder": "email@exemple.com",
+    "sendInvitation": "Envoyer l'invitation",
+    "inviteMember": "Inviter un membre",
+    "pendingInvitations": "Invitations en attente",
+    "cancelInvitation": "Annuler l'invitation de {email}",
+    "emailRequired": "L'email est requis.",
+    "inviteFailed": "L'invitation a échoué.",
+    "cancelFailed": "L'annulation a échoué."
+  }
+}

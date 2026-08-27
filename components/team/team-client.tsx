@@ -1,10 +1,11 @@
 "use client"
 
 import { Loader2, Mail, Plus, X } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useRouter } from "@/i18n/navigation"
 import { authClient } from "@/lib/auth-client"
 
 type MemberItem = { id: string; name: string; email: string; role: string }
@@ -26,6 +27,8 @@ export function TeamClient({
   invitations: InvitationItem[]
   canManage: boolean
 }) {
+  const t = useTranslations("team")
+  const tCommon = useTranslations("common")
   const router = useRouter()
   const [inviting, setInviting] = useState(false)
   const [email, setEmail] = useState("")
@@ -35,7 +38,7 @@ export function TeamClient({
   const [cancelingId, setCancelingId] = useState<string | null>(null)
 
   async function sendInvite() {
-    if (!email.trim()) return setError("L'email est requis.")
+    if (!email.trim()) return setError(t("emailRequired"))
     setSubmitting(true)
     setError(null)
     const result = await authClient.organization.inviteMember({
@@ -44,7 +47,7 @@ export function TeamClient({
       organizationId,
     })
     setSubmitting(false)
-    if (result.error) return setError(result.error.message || "L'invitation a échoué.")
+    if (result.error) return setError(result.error.message || t("inviteFailed"))
     setInviting(false)
     setEmail("")
     setRole("member")
@@ -56,7 +59,7 @@ export function TeamClient({
     setError(null)
     const result = await authClient.organization.cancelInvitation({ invitationId })
     setCancelingId(null)
-    if (result.error) return setError(result.error.message || "L'annulation a échoué.")
+    if (result.error) return setError(result.error.message || t("cancelFailed"))
     router.refresh()
   }
 
@@ -72,7 +75,7 @@ export function TeamClient({
                   type="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  placeholder="email@exemple.com"
+                  placeholder={t("emailPlaceholder")}
                   className={inputClassName}
                   disabled={submitting}
                 />
@@ -82,15 +85,15 @@ export function TeamClient({
                   className={selectClassName}
                   disabled={submitting}
                 >
-                  <option value="member">Membre</option>
-                  <option value="admin">Admin</option>
+                  <option value="member">{t("rolesMember")}</option>
+                  <option value="admin">{t("rolesAdmin")}</option>
                 </select>
               </div>
               {error && <p className="text-xs text-destructive">{error}</p>}
               <div className="flex items-center gap-2">
                 <Button onClick={() => void sendInvite()} disabled={submitting}>
                   {submitting ? <Loader2 className="animate-spin" /> : null}
-                  Envoyer l&apos;invitation
+                  {t("sendInvitation")}
                 </Button>
                 <Button
                   variant="ghost"
@@ -99,7 +102,7 @@ export function TeamClient({
                     setError(null)
                   }}
                 >
-                  Annuler
+                  {tCommon("cancel")}
                 </Button>
               </div>
             </div>
@@ -110,7 +113,7 @@ export function TeamClient({
               className="flex w-full items-center justify-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <Plus className="size-4" />
-              Inviter un membre
+              {t("inviteMember")}
             </button>
           )}
         </div>
@@ -143,7 +146,7 @@ export function TeamClient({
       {canManage && invitations.length > 0 && (
         <div className="overflow-hidden rounded-2xl border border-border">
           <div className="border-b border-border bg-muted/40 px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            Invitations en attente
+            {t("pendingInvitations")}
           </div>
           {invitations.map((invitation) => (
             <div
@@ -162,7 +165,7 @@ export function TeamClient({
                 size="icon-xs"
                 disabled={cancelingId === invitation.id}
                 onClick={() => void cancelInvitation(invitation.id)}
-                aria-label={`Annuler l'invitation de ${invitation.email}`}
+                aria-label={t("cancelInvitation", { email: invitation.email })}
               >
                 {cancelingId === invitation.id ? <Loader2 className="animate-spin" /> : <X />}
               </Button>
